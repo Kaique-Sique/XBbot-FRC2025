@@ -18,6 +18,7 @@ public class RampIOSim implements RampIO {
   private boolean closedLoop = false;
   private double appliedVolts = 0.0;
 
+  // TODO: Add gravity and mechanical travel limits after the ramp geometry and mass properties are defined.
   public RampIOSim() {
     motorSim =
         new DCMotorSim(
