@@ -101,13 +101,21 @@ public class OuttakeIOSim implements OuttakeIO {
   @Override
   public void setOuttakeOpenLoop(double output) {
     outtakeClosedLoop = false;
-    outtakeAppliedVolts =\n        MathUtil.clamp(\n            output,\n            -OuttakeConstants.OuttakeMotor.MAX_VOLTAGE,\n            OuttakeConstants.OuttakeMotor.MAX_VOLTAGE);
+    outtakeAppliedVolts =
+        MathUtil.clamp(
+            output,
+            -OuttakeConstants.OuttakeMotor.MAX_VOLTAGE,
+            OuttakeConstants.OuttakeMotor.MAX_VOLTAGE);
   }
 
   @Override
   public void setPivotOpenLoop(double output) {
     pivotClosedLoop = false;
-    pivotAppliedVolts =\n        MathUtil.clamp(\n            output,\n            -OuttakeConstants.PivotMotor.MAX_VOLTAGE,\n            OuttakeConstants.PivotMotor.MAX_VOLTAGE);
+    pivotAppliedVolts =
+        MathUtil.clamp(
+            output,
+            -OuttakeConstants.PivotMotor.MAX_VOLTAGE,
+            OuttakeConstants.PivotMotor.MAX_VOLTAGE);
   }
 
   @Override
@@ -122,7 +130,9 @@ public class OuttakeIOSim implements OuttakeIO {
   @Override
   public void setPivotPosition(double positionRad) {
     pivotClosedLoop = true;
-    // Position is not a valid input to kS/kV feedforward. Keep this at zero until a\n    // characterized gravity feedforward (kG) and motion feedforward are implemented.\n    pivotFFVolts = 0.0;
+    // Position is not a valid input to kS/kV feedforward. Keep this at zero until a
+    // characterized gravity feedforward (kG) and motion feedforward are implemented.
+    pivotFFVolts = 0.0;
     pivotController.setSetpoint(positionRad);
   }
 
