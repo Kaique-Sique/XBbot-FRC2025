@@ -11,23 +11,13 @@ public class ClimberIOSim implements ClimberIO {
   private final DCMotorSim motorSim;
   private final PIDController positionController =
       new PIDController(
-          ClimberConstants.ClimberMotor.PositionController.SIM.kP,
-          ClimberConstants.ClimberMotor.PositionController.SIM.kI,
-          ClimberConstants.ClimberMotor.PositionController.SIM.kD);
-  private final PIDController velocityController =
-      new PIDController(
-          ClimberConstants.ClimberMotor.VelocityController.SIM.kP,
-          ClimberConstants.ClimberMotor.VelocityController.SIM.kI,
-          ClimberConstants.ClimberMotor.VelocityController.SIM.kD);
+          ClimberConstants.ClimberMotor.FeedBackController.SIM.kP,
+          ClimberConstants.ClimberMotor.FeedBackController.SIM.kI,
+          ClimberConstants.ClimberMotor.FeedBackController.SIM.kD);
 
-  private enum ControlMode {
-    VOLTAGE,
-    POSITION,
-    VELOCITY
-  }
-
-  private ControlMode controlMode = ControlMode.VOLTAGE;
-  private double appliedVolts;
+  private boolean climberClosedLoop = false;
+  private double climberFFVolts = 0.0;
+  private double appliedVolts = 0.0;
 
   public ClimberIOSim() {
     motorSim =
@@ -41,19 +31,14 @@ public class ClimberIOSim implements ClimberIO {
 
   @Override
   public void updateInputs(ClimberIOInputs inputs) {
-    switch (controlMode) {
-      case POSITION:
-        appliedVolts = positionController.calculate(motorSim.getAngularPositionRad());
-        velocityController.reset();
-        break;
-      case VELOCITY:
-        appliedVolts = velocityController.calculate(motorSim.getAngularVelocityRadPerSec());
-        positionController.reset();
-        break;
-      default:
-        positionController.reset();
-        velocityController.reset();
-        break;
+    if(climberClosedLoop)
+    {
+      appliedVolts = 
+        climberFFVolts + positionController.calculate(motorSim.getAngularPositionRad());
+    }
+    else
+    {
+      positionController.reset();
     }
 
     appliedVolts =
@@ -73,19 +58,13 @@ public class ClimberIOSim implements ClimberIO {
 
   @Override
   public void setPosition(double positionRad) {
-    controlMode = ControlMode.POSITION;
+    climberClosedLoop = true;
     positionController.setSetpoint(positionRad);
   }
 
   @Override
-  public void setVelocity(double velocityRadPerSec) {
-    controlMode = ControlMode.VELOCITY;
-    velocityController.setSetpoint(velocityRadPerSec);
-  }
-
-  @Override
   public void setVoltage(double volts) {
-    controlMode = ControlMode.VOLTAGE;
+    climberClosedLoop = false;
     appliedVolts =
         MathUtil.clamp(
             volts,

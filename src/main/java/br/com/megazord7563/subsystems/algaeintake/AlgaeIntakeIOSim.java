@@ -28,7 +28,8 @@ public class AlgaeIntakeIOSim implements AlgaeIntakeIO {
   private double rollerAppliedVolts;
   private double rollerFFVolts;
 
-  // TODO: Add pivot gravity, mechanical travel limits, and algae interaction after defining mechanism properties.
+  // TODO: Add pivot gravity, mechanical travel limits, and algae interaction after defining
+  // mechanism properties.
   public AlgaeIntakeIOSim() {
     pivotSim =
         new DCMotorSim(

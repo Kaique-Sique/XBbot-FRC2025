@@ -24,7 +24,8 @@ public class AlgaeIntake extends SubsystemBase {
   public AlgaeIntake(AlgaeIntakeIO io) {
     this.io = io;
     pivotDisconnectedAlert = new Alert("Disconnected algae intake pivot motor.", AlertType.kError);
-    rollerDisconnectedAlert = new Alert("Disconnected algae intake roller motor.", AlertType.kError);
+    rollerDisconnectedAlert =
+        new Alert("Disconnected algae intake roller motor.", AlertType.kError);
   }
 
   @Override
@@ -36,10 +37,8 @@ public class AlgaeIntake extends SubsystemBase {
       stop();
     }
 
-    pivotDisconnectedAlert.set(
-        !inputs.pivotMotorConnected && Constants.currentMode != Mode.SIM);
-    rollerDisconnectedAlert.set(
-        !inputs.rollerMotorConnected && Constants.currentMode != Mode.SIM);
+    pivotDisconnectedAlert.set(!inputs.pivotMotorConnected && Constants.currentMode != Mode.SIM);
+    rollerDisconnectedAlert.set(!inputs.rollerMotorConnected && Constants.currentMode != Mode.SIM);
   }
 
   // ── Setters ─────────────────────────────────────────────────────────────────

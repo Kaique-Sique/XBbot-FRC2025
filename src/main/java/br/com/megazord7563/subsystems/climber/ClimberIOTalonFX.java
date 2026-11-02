@@ -6,7 +6,6 @@ import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
-import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.ParentDevice;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -24,15 +23,13 @@ public class ClimberIOTalonFX implements ClimberIO {
   private final TalonFX motor;
 
   private final MotionMagicVoltage positionRequest = new MotionMagicVoltage(0.0).withSlot(1);
-  private final VelocityVoltage velocityRequest = new VelocityVoltage(0.0).withSlot(0);
   private final VoltageOut voltageRequest = new VoltageOut(0.0);
 
   private final StatusSignal<Angle> position;
   private final StatusSignal<AngularVelocity> velocity;
   private final StatusSignal<Voltage> appliedVolts;
   private final StatusSignal<Current> current;
-  private final Debouncer connectedDebounce =
-      new Debouncer(0.5, Debouncer.DebounceType.kFalling);
+  private final Debouncer connectedDebounce = new Debouncer(0.5, Debouncer.DebounceType.kFalling);
 
   public ClimberIOTalonFX() {
     motor = new TalonFX(ClimberConstants.ClimberMotor.MOTOR_ID, ClimberConstants.CAN_BUS);
@@ -55,10 +52,6 @@ public class ClimberIOTalonFX implements ClimberIO {
     config.Slot0.kP = ClimberConstants.ClimberMotor.FeedBackController.kP;
     config.Slot0.kI = ClimberConstants.ClimberMotor.FeedBackController.kI;
     config.Slot0.kD = ClimberConstants.ClimberMotor.FeedBackController.kD;
-
-    config.Slot1.kP = ClimberConstants.ClimberMotor.PositionController.kP;
-    config.Slot1.kI = ClimberConstants.ClimberMotor.PositionController.kI;
-    config.Slot1.kD = ClimberConstants.ClimberMotor.PositionController.kD;
 
     config.MotionMagic.MotionMagicCruiseVelocity =
         ClimberConstants.ClimberMotor.MotionMagic.CRUISE_VELOCITY;
@@ -96,11 +89,6 @@ public class ClimberIOTalonFX implements ClimberIO {
   @Override
   public void setPosition(double positionRad) {
     motor.setControl(positionRequest.withPosition(Units.radiansToRotations(positionRad)));
-  }
-
-  @Override
-  public void setVelocity(double velocityRadPerSec) {
-    motor.setControl(velocityRequest.withVelocity(Units.radiansToRotations(velocityRadPerSec)));
   }
 
   @Override

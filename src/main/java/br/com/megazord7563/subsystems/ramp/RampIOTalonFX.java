@@ -30,8 +30,7 @@ public class RampIOTalonFX implements RampIO {
   private final StatusSignal<Voltage> appliedVolts;
   private final StatusSignal<Current> current;
 
-  private final Debouncer connectedDebounce =
-      new Debouncer(0.5, Debouncer.DebounceType.kFalling);
+  private final Debouncer connectedDebounce = new Debouncer(0.5, Debouncer.DebounceType.kFalling);
 
   public RampIOTalonFX() {
     motor = new TalonFX(RampConstants.Motor.MOTOR_ID, RampConstants.CAN_BUS);
@@ -48,11 +47,9 @@ public class RampIOTalonFX implements RampIO {
     config.Slot0.kA = RampConstants.Motor.FeedForwardController.kA;
     config.Slot0.kG = RampConstants.Motor.FeedForwardController.kG;
     config.Feedback.SensorToMechanismRatio = RampConstants.Motor.MOTOR_GEAR_RATIO;
-    config.CurrentLimits.StatorCurrentLimit =
-        RampConstants.Motor.STATOR_CURRENT_LIMIT.in(Amps);
+    config.CurrentLimits.StatorCurrentLimit = RampConstants.Motor.STATOR_CURRENT_LIMIT.in(Amps);
     config.CurrentLimits.StatorCurrentLimitEnable = true;
-    config.CurrentLimits.SupplyCurrentLimit =
-        RampConstants.Motor.SUPPLY_CURRENT_LIMIT.in(Amps);
+    config.CurrentLimits.SupplyCurrentLimit = RampConstants.Motor.SUPPLY_CURRENT_LIMIT.in(Amps);
     config.CurrentLimits.SupplyCurrentLimitEnable = true;
     config.MotorOutput.Inverted =
         RampConstants.Motor.MOTOR_INVERTED
@@ -65,8 +62,7 @@ public class RampIOTalonFX implements RampIO {
     appliedVolts = motor.getMotorVoltage();
     current = motor.getStatorCurrent();
 
-    BaseStatusSignal.setUpdateFrequencyForAll(
-        50.0, position, velocity, appliedVolts, current);
+    BaseStatusSignal.setUpdateFrequencyForAll(50.0, position, velocity, appliedVolts, current);
     ParentDevice.optimizeBusUtilizationForAll(motor);
   }
 
@@ -83,8 +79,8 @@ public class RampIOTalonFX implements RampIO {
   @Override
   public void setVoltage(double volts) {
     double clampedVolts =
-        Math.max(-RampConstants.Motor.MAX_VOLTAGE,
-            Math.min(RampConstants.Motor.MAX_VOLTAGE, volts));
+        Math.max(
+            -RampConstants.Motor.MAX_VOLTAGE, Math.min(RampConstants.Motor.MAX_VOLTAGE, volts));
     motor.setControl(voltageRequest.withOutput(clampedVolts));
   }
 
