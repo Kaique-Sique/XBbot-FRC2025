@@ -4,6 +4,8 @@
 
 package br.com.megazord7563.subsystems.outtake;
 
+import static edu.wpi.first.units.Units.Radians;
+import static edu.wpi.first.units.Units.RadiansPerSecond;
 import static edu.wpi.first.units.Units.Volts;
 
 import br.com.megazord7563.Constants;
@@ -42,7 +44,13 @@ public class Outtake extends SubsystemBase {
                 null,
                 (state) -> Logger.recordOutput("Outtake/SysIdState", state.toString())),
             new SysIdRoutine.Mechanism(
-                (voltage) -> runCharacterization(voltage.in(Volts)), null, this));
+                (voltage) -> runCharacterization(voltage.in(Volts)),
+                (log) ->
+                    log.motor("outtake")
+                        .voltage(Volts.of(inputs.outtakeMotorAppliedVolts))
+                        .angularPosition(Radians.of(inputs.outtakeMotorPositionRad))
+                        .angularVelocity(RadiansPerSecond.of(inputs.outtakeMotorVelocityRadPerSec)),
+                this));
   }
 
   @Override
