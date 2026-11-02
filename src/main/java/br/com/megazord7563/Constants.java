@@ -37,6 +37,7 @@ public final class Constants {
       LIFT(0.3);
 
       public final double speedLimit;
+
       DriveMode(double speedLimit) {
         this.speedLimit = speedLimit;
       }

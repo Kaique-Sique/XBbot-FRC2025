@@ -57,7 +57,7 @@ public class RobotContainer {
 
       case SIM:
         // Sim robot, instantiate physics sim IO implementations
-        driveSubsystem  =
+        driveSubsystem =
             new DriveSubsystem(
                 new GyroIO() {},
                 new ModuleIOSim(TunerConstants.FrontLeft),
@@ -83,9 +83,11 @@ public class RobotContainer {
 
     // Set up SysId routines
     autoChooser.addOption(
-        "Drive Wheel Radius Characterization", DriveCommands.wheelRadiusCharacterization(driveSubsystem));
+        "Drive Wheel Radius Characterization",
+        DriveCommands.wheelRadiusCharacterization(driveSubsystem));
     autoChooser.addOption(
-        "Drive Simple FF Characterization", DriveCommands.feedforwardCharacterization(driveSubsystem));
+        "Drive Simple FF Characterization",
+        DriveCommands.feedforwardCharacterization(driveSubsystem));
     autoChooser.addOption(
         "Drive SysId (Quasistatic Forward)",
         driveSubsystem.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
@@ -93,9 +95,11 @@ public class RobotContainer {
         "Drive SysId (Quasistatic Reverse)",
         driveSubsystem.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
     autoChooser.addOption(
-        "Drive SysId (Dynamic Forward)", driveSubsystem.sysIdDynamic(SysIdRoutine.Direction.kForward));
+        "Drive SysId (Dynamic Forward)",
+        driveSubsystem.sysIdDynamic(SysIdRoutine.Direction.kForward));
     autoChooser.addOption(
-        "Drive SysId (Dynamic Reverse)", driveSubsystem.sysIdDynamic(SysIdRoutine.Direction.kReverse));
+        "Drive SysId (Dynamic Reverse)",
+        driveSubsystem.sysIdDynamic(SysIdRoutine.Direction.kReverse));
 
     // Configure the button bindings
     configureButtonBindings();
@@ -136,18 +140,16 @@ public class RobotContainer {
             Commands.runOnce(
                     () ->
                         driveSubsystem.setPose(
-                            new Pose2d(driveSubsystem.getPose().getTranslation(), Rotation2d.kZero)),
+                            new Pose2d(
+                                driveSubsystem.getPose().getTranslation(), Rotation2d.kZero)),
                     driveSubsystem)
                 .ignoringDisable(true));
   }
 
-  /**
-   *   Use this to pass the drive subsystem to the main {@link Robot} class.
-   */
+  /** Use this to pass the drive subsystem to the main {@link Robot} class. */
   public DriveSubsystem getDrive() {
     return driveSubsystem;
   }
-
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
@@ -163,8 +165,7 @@ public class RobotContainer {
    *
    * @return the command to run in test mode
    */
-  public Command getTestRoutineCommand()
-  {
+  public Command getTestRoutineCommand() {
     return Commands.none();
   }
 }
