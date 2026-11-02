@@ -1,0 +1,41 @@
+name: Vendordep Updates
+
+on:
+  schedule:
+    - cron: '0 10 * * 1' # Weekly, Mondays at 10:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  vendordeps:
+    name: Open PRs for outdated vendordeps
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          # Set BOT_ACCESS_TOKEN to a PAT if you want generated PRs to trigger CI.
+          token: ${{ secrets.BOT_ACCESS_TOKEN || github.token }}
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: python -m pip install requests packaging
+
+      - name: Configure git
+        run: |
+          git config user.name "xb-bot"
+          git config user.email "xb-bot@users.noreply.github.com"
+
+      - name: Create pull requests for vendordeps
+        run: python .github/scripts/update_vendordeps.py
+        env:
+          GH_TOKEN: ${{ secrets.BOT_ACCESS_TOKEN || github.token }}
+          BASE_BRANCH: ${{ github.event.repository.default_branch }}
+          FRC_YEAR: '2026'
