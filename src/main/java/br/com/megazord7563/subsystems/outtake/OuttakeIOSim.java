@@ -69,17 +69,21 @@ public class OuttakeIOSim implements OuttakeIO {
       pivotController.reset();
     }
 
-    // Update simulation state
-    outtakeSim.setInputVoltage(
+    // Clamp the controller output before both applying and logging it.
+    outtakeAppliedVolts =
         MathUtil.clamp(
             outtakeAppliedVolts,
             -OuttakeConstants.OuttakeMotor.MAX_VOLTAGE,
-            OuttakeConstants.OuttakeMotor.MAX_VOLTAGE));
-    pivotSim.setInputVoltage(
+            OuttakeConstants.OuttakeMotor.MAX_VOLTAGE);
+    pivotAppliedVolts =
         MathUtil.clamp(
             pivotAppliedVolts,
             -OuttakeConstants.PivotMotor.MAX_VOLTAGE,
-            OuttakeConstants.PivotMotor.MAX_VOLTAGE));
+            OuttakeConstants.PivotMotor.MAX_VOLTAGE);
+
+    // Update simulation state
+    outtakeSim.setInputVoltage(outtakeAppliedVolts);
+    pivotSim.setInputVoltage(pivotAppliedVolts);
     outtakeSim.update(Constants.periodicLoopPeriod);
     pivotSim.update(Constants.periodicLoopPeriod);
 
