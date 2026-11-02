@@ -12,15 +12,15 @@ public class RampConstants {
 
   public static final class Motor {
     public static final int MOTOR_ID = 0; // TODO: Set a unique CAN ID before enabling this motor.
-    public static final double MOTOR_GEAR_RATIO = 1.0; // TODO: Replace with the measured mechanism reduction.
+    public static final double MOTOR_GEAR_RATIO = 1.0; // TODO: Replace with the measured mechanism reduction before hardware operation.
     public static final boolean MOTOR_INVERTED = false; // TODO: Verify motor direction on the robot.
     public static final DCMotor DC_MOTOR = DCMotor.getKrakenX60Foc(1);
 
-    public static final Current STATOR_CURRENT_LIMIT = Amps.of(80);
-    public static final Current SUPPLY_CURRENT_LIMIT = Amps.of(30);
+    public static final Current STATOR_CURRENT_LIMIT = Amps.of(80); // TODO: Validate against the motor and mechanism.
+    public static final Current SUPPLY_CURRENT_LIMIT = Amps.of(30); // TODO: Validate against the power budget.
 
-    public static final double MOTOR_INERTIA = 0.2; // TODO: Measure or calculate the mechanism-side moment of inertia.
-    public static final double MAX_VOLTAGE = 8.0;
+    public static final double MOTOR_INERTIA = 0.2; // TODO: Replace this simulation placeholder with measured mechanism inertia.
+    public static final double MAX_VOLTAGE = 8.0; // TODO: Confirm a safe voltage limit for the mechanism.
 
     // TODO: Characterize and tune these gains before enabling closed-loop position control.
     public static class FeedBackController {
