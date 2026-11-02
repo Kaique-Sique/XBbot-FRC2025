@@ -5,37 +5,37 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 
 public class RobotState {
-    private static Pose2d robotPose = Pose2d.kZero;
-    private static ChassisSpeeds robotVelocity = new ChassisSpeeds();
+  private static Pose2d robotPose = Pose2d.kZero;
+  private static ChassisSpeeds robotVelocity = new ChassisSpeeds();
 
-    // ── Singleton ─────────────────────────────────────────────────────────────────
+  // ── Singleton ─────────────────────────────────────────────────────────────────
 
-    private static RobotState instance;
+  private static RobotState instance;
 
-    public static RobotState getInstance() {
-        if (instance == null) {
-        instance = new RobotState();
-        }
-        return instance;
+  public static RobotState getInstance() {
+    if (instance == null) {
+      instance = new RobotState();
     }
+    return instance;
+  }
 
-    // ── Getters ─────────────────────────────────────────────────────────────────
+  // ── Getters ─────────────────────────────────────────────────────────────────
 
-    public Rotation2d getRobotRotation() {
-        return robotPose.getRotation();
-    }
+  public Rotation2d getRobotRotation() {
+    return robotPose.getRotation();
+  }
 
-    public Pose2d getRobotPose() {
-        return robotPose;
-    }
+  public Pose2d getRobotPose() {
+    return robotPose;
+  }
 
-    public ChassisSpeeds getRobotVelocity() {
-        return robotVelocity;
-    }
+  public ChassisSpeeds getRobotVelocity() {
+    return robotVelocity;
+  }
 
-    public ChassisSpeeds getFieldVelocity() {
-        return ChassisSpeeds.fromRobotRelativeSpeeds(robotVelocity, getRobotRotation());
-    }
+  public ChassisSpeeds getFieldVelocity() {
+    return ChassisSpeeds.fromRobotRelativeSpeeds(robotVelocity, getRobotRotation());
+  }
 
-    // ── Setters ─────────────────────────────────────────────────────────────────
+  // ── Setters ─────────────────────────────────────────────────────────────────
 }
