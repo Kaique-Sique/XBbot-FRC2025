@@ -1,12 +1,16 @@
 package br.com.megazord7563.subsystems.outtake;
 
+import br.com.megazord7563.Constants;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.wpilibj.simulation.DCMotorSim;
 
+/**
+ * Physics sim implementation of module IO. The sim models are configured using a set of module
+ * constants from Phoenix. Simulation is always based on voltage control.
+ */
 public class OuttakeIOSim implements OuttakeIO {
-
     private final DCMotorSim outtakeSim;
     private final DCMotorSim pivotSim;
 
@@ -70,15 +74,17 @@ public class OuttakeIOSim implements OuttakeIO {
         pivotSim.setInputVoltage(MathUtil.clamp(pivotAppliedVolts, 
                 -OuttakeConstants.PivotMotor.MAX_VOLTAGE, 
                 OuttakeConstants.PivotMotor.MAX_VOLTAGE));
-        outtakeSim.update(0.02);
-        pivotSim.update(0.02);
+        outtakeSim.update(Constants.periodicLoopPeriod);
+        pivotSim.update(Constants.periodicLoopPeriod);
         
+        // update outtake inputs
         inputs.outakeMotorConnected = true;
         inputs.outakeMotorPositionRad = outtakeSim.getAngularPositionRad();
         inputs.outakeMotorVelocityRadPerSec = outtakeSim.getAngularVelocityRadPerSec();
         inputs.outakeMotorAppliedVolts = outtakeAppliedVolts;
         inputs.outakeMotorCurrentAmps = outtakeSim.getCurrentDrawAmps();
 
+        // update pivot inputs
         inputs.pivotMotorConnected = true;
         inputs.pivotMotorPositionRad = pivotSim.getAngularPositionRad();
         inputs.pivotMotorVelocityRadPerSec = pivotSim.getAngularVelocityRadPerSec();
