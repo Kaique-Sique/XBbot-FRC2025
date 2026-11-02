@@ -62,4 +62,4 @@ O código da equipe 2910 é uma referência para estudar organização e decisõ
 
 ## Estado inicial
 
-Os subsistemas Drive e Outtake possuem implementação inicial. O subsistema Ramp possui articulação motorizada por TalonFX e condução passiva do coral; seus parâmetros mecânicos e de controle ainda precisam ser confirmados.
+Os subsistemas Drive, Outtake, Ramp e AlgaeIntake possuem implementação inicial. O Ramp possui articulação motorizada por TalonFX e condução passiva do coral. O AlgaeIntake possui articulação por TalonFX e rodas de coleta motorizadas por um segundo TalonFX. Os parâmetros mecânicos, IDs de CAN e ganhos de controle desses mecanismos ainda precisam ser confirmados.

@@ -8,6 +8,10 @@ import br.com.megazord7563.subsystems.drive.GyroIOPigeon2;
 import br.com.megazord7563.subsystems.drive.ModuleIO;
 import br.com.megazord7563.subsystems.drive.ModuleIOSim;
 import br.com.megazord7563.subsystems.drive.ModuleIOTalonFX;
+import br.com.megazord7563.subsystems.algaeintake.AlgaeIntake;
+import br.com.megazord7563.subsystems.algaeintake.AlgaeIntakeIO;
+import br.com.megazord7563.subsystems.algaeintake.AlgaeIntakeIOSim;
+import br.com.megazord7563.subsystems.algaeintake.AlgaeIntakeIOTalonFX;
 import br.com.megazord7563.subsystems.outtake.Outtake;
 import br.com.megazord7563.subsystems.outtake.OuttakeIO;
 import br.com.megazord7563.subsystems.outtake.OuttakeIOSim;
@@ -38,6 +42,7 @@ public class RobotContainer {
   private final DriveSubsystem driveSubsystem;
   private final Outtake outtake;
   private final Ramp ramp;
+  private final AlgaeIntake algaeIntake;
 
   // Controller
   private final CommandXboxController controller = new CommandXboxController(0);
@@ -58,6 +63,7 @@ public class RobotContainer {
                 new ModuleIOTalonFX(TunerConstants.BackRight));
         outtake = new Outtake(new OuttakeIOTalonFX());
         ramp = new Ramp(new RampIOTalonFX());
+        algaeIntake = new AlgaeIntake(new AlgaeIntakeIOTalonFX());
         break;
 
       case SIM:
@@ -71,6 +77,7 @@ public class RobotContainer {
                 new ModuleIOSim(TunerConstants.BackRight));
         outtake = new Outtake(new OuttakeIOSim());
         ramp = new Ramp(new RampIOSim());
+        algaeIntake = new AlgaeIntake(new AlgaeIntakeIOSim());
         break;
 
       default:
@@ -84,6 +91,7 @@ public class RobotContainer {
                 new ModuleIO() {});
         outtake = new Outtake(new OuttakeIO() {});
         ramp = new Ramp(new RampIO() {});
+        algaeIntake = new AlgaeIntake(new AlgaeIntakeIO() {});
         break;
     }
 
@@ -180,6 +188,11 @@ public class RobotContainer {
   /** Use this to pass the ramp subsystem to the main {@link Robot} class. */
   public Ramp getRamp() {
     return ramp;
+  }
+
+  /** Use this to pass the algae intake subsystem to the main {@link Robot} class. */
+  public AlgaeIntake getAlgaeIntake() {
+    return algaeIntake;
   }
 
   /**
