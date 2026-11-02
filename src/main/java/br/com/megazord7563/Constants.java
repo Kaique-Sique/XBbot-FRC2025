@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.RobotBase;
 public final class Constants {
   public static final Mode simMode = Mode.SIM;
   public static final Mode currentMode = RobotBase.isReal() ? Mode.REAL : simMode;
+  public static final double periodicLoopPeriod = 0.01; // 20 ms
 
   public static enum Mode {
     /** Running on a real robot. */
@@ -27,5 +28,18 @@ public final class Constants {
 
     /** Replaying from a log file. */
     REPLAY
+  }
+
+  public static final class DriveConstants {
+    public static enum DriveMode {
+      MAX(0.95),
+      FAST(0.6),
+      LIFT(0.3);
+
+      public final double speedLimit;
+      DriveMode(double speedLimit) {
+        this.speedLimit = speedLimit;
+      }
+    }
   }
 }
