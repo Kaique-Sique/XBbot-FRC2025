@@ -28,6 +28,7 @@ Nunca invente:
 2. **Manipulador de coral:** mecanismo articulado com rodas motorizadas.
 3. **Elevador:** sistema de elevação.
 4. **Intake de algae:** mecanismo articulado com rodas motorizadas.
+5. **Climber:** mecanismo de escalada acionado por um Kraken X60 com TalonFX. A implementação atual utiliza um único motor; o ID CAN legado é 19, mas o barramento, a redução e os limites mecânicos ainda precisam ser confirmados.
 
 A interação entre mecanismos, sensores, atuadores, limites e sequências operacionais ainda precisa ser detalhada.
 
@@ -44,7 +45,7 @@ A interação entre mecanismos, sensores, atuadores, limites e sequências opera
 
 ### biocore2026sim v2
 
-A camada de IOs existente em `biocore2026sim v2` é uma referência importante e deve ser preservada/adaptada como ponto de partida arquitetural. Não descarte essa abstração sem uma justificativa técnica discutida com o responsável pelo projeto.
+A camada de IOs existente em biocore2026sim v2 é uma referência importante e deve ser preservada/adaptada como ponto de partida arquitetural. Não descarte essa abstração sem uma justificativa técnica discutida com o responsável pelo projeto.
 
 ### Código da equipe 2910 FRC
 
@@ -62,4 +63,4 @@ O código da equipe 2910 é uma referência para estudar organização e decisõ
 
 ## Estado inicial
 
-Os subsistemas Drive, Outtake, Ramp e AlgaeIntake possuem implementação inicial. O Ramp possui articulação motorizada por TalonFX e condução passiva do coral. O AlgaeIntake possui articulação por TalonFX e rodas de coleta motorizadas por um segundo TalonFX. Os parâmetros mecânicos, IDs de CAN e ganhos de controle desses mecanismos ainda precisam ser confirmados.
+Os subsistemas Drive, Outtake, Ramp, AlgaeIntake e Climber possuem implementação inicial. O Ramp possui articulação motorizada por TalonFX e condução passiva do coral. O AlgaeIntake possui articulação por TalonFX e rodas de coleta motorizadas por um segundo TalonFX. O Climber possui controle de posição por Motion Magic e controle aberto por tensão; parâmetros mecânicos e de segurança ainda precisam ser confirmados.

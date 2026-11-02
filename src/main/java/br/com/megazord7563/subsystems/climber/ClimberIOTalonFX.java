@@ -22,9 +22,9 @@ import edu.wpi.first.units.measure.Voltage;
 public class ClimberIOTalonFX implements ClimberIO {
   private final TalonFX motor;
 
-  private final MotionMagicVoltage positionRequest = new MotionMagicVoltage(0.0).withSlot(1);
+  // Slot 0 is configured below and must also be selected by the position request.
+  private final MotionMagicVoltage positionRequest = new MotionMagicVoltage(0.0).withSlot(0);
   private final VoltageOut voltageRequest = new VoltageOut(0.0);
-
   private final StatusSignal<Angle> position;
   private final StatusSignal<AngularVelocity> velocity;
   private final StatusSignal<Voltage> appliedVolts;
