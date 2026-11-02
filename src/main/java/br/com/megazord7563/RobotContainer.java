@@ -124,7 +124,7 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
-  private void configureButtonBindings() {\n    // TODO: Add operator bindings for outtake intake/eject and pivot positioning once the\n    // operator controller layout and mechanism setpoints have been finalized.
+  private void configureButtonBindings() {
     // Default command, normal field-relative drive
     driveSubsystem.setDefaultCommand(
         DriveCommands.joystickDrive(
