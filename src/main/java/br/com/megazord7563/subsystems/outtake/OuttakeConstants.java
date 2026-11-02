@@ -14,18 +14,18 @@ public class OuttakeConstants {
   public static final CANBus CAN_BUS = TunerConstants.kCANBus;
 
   public static final class OuttakeMotor {
-    public static final int MOTOR_ID = 0; // TODO: Calibrate CAN ID
-    public static final double MOTOR_GEAR_RATIO = 1.0;
+    public static final int MOTOR_ID = 0; // TODO: Set a unique CAN ID before enabling this motor on the robot.
+    public static final double MOTOR_GEAR_RATIO = 1.0; // TODO: Replace with the measured mechanism reduction. // TODO: Replace with the measured mechanism reduction.
     public static final boolean MOTOR_INVERTED = false;
     public static final DCMotor DC_MOTOR = DCMotor.getKrakenX60Foc(1);
 
     public static final Current STATOR_CURRENT_LIMIT = Amps.of(80);
     public static final Current SUPPLY_CURRENT_LIMIT = Amps.of(30);
 
-    public static final double MOTOR_INERTIA = 0.2; // TODO: Calibrate Inertia
+    public static final double MOTOR_INERTIA = 0.2; // TODO: Measure or calculate the mechanism-side moment of inertia.
     public static final double MAX_VOLTAGE = 8.0;
 
-    // TODO: Calibrate Gains
+    // TODO: Characterize and tune these gains before using closed-loop control.
     public static class FeedBackController {
       public static final double kP = 0.0;
       public static final double kI = 0.0;
@@ -38,7 +38,7 @@ public class OuttakeConstants {
       }
     }
 
-    public static class FeedForwardController {
+    // TODO: Add a characterized gravity feedforward (kG) for the pivot once its zero angle is defined.\n    public static class FeedForwardController {
       public static final double kV = 0.0;
       public static final double kS = 0.0;
       public static final double kA = 0.0;
@@ -52,7 +52,7 @@ public class OuttakeConstants {
   }
 
   public static final class PivotMotor {
-    public static final int MOTOR_ID = 0; // TODO: Calibrate CAN ID
+    public static final int MOTOR_ID = 0; // TODO: Set a unique CAN ID before enabling this motor on the robot.
     public static final double MOTOR_GEAR_RATIO = 1.0;
     public static final boolean MOTOR_INVERTED = false;
     public static final DCMotor DC_MOTOR = DCMotor.getKrakenX60Foc(1);
@@ -60,7 +60,7 @@ public class OuttakeConstants {
     public static final Current STATOR_CURRENT_LIMIT = Amps.of(80);
     public static final Current SUPPLY_CURRENT_LIMIT = Amps.of(30);
 
-    public static final double MOTOR_INERTIA = 0.4; // TODO: Calibrate Inertia
+    public static final double MOTOR_INERTIA = 0.4; // TODO: Measure or calculate the pivot-side moment of inertia.
     public static final double MAX_VOLTAGE = 8.0;
 
     // TODO: Calibrate Gains
