@@ -59,7 +59,9 @@ public class OuttakeIOTalonFX implements OuttakeIO {
 
     // Configure outtake motor
     var outtakeConfig = new TalonFXConfiguration();
-    outtakeConfig.MotorOutput.NeutralMode = NeutralModeValue.Coast;\n    outtakeConfig.Voltage.PeakForwardVoltage = OuttakeConstants.OuttakeMotor.MAX_VOLTAGE;\n    outtakeConfig.Voltage.PeakReverseVoltage = -OuttakeConstants.OuttakeMotor.MAX_VOLTAGE;
+    outtakeConfig.MotorOutput.NeutralMode = NeutralModeValue.Coast;
+    outtakeConfig.Voltage.PeakForwardVoltage = OuttakeConstants.OuttakeMotor.MAX_VOLTAGE;
+    outtakeConfig.Voltage.PeakReverseVoltage = -OuttakeConstants.OuttakeMotor.MAX_VOLTAGE;
     outtakeConfig.Slot0.kP = OuttakeConstants.OuttakeMotor.FeedBackController.kP;
     outtakeConfig.Slot0.kI = OuttakeConstants.OuttakeMotor.FeedBackController.kI;
     outtakeConfig.Slot0.kD = OuttakeConstants.OuttakeMotor.FeedBackController.kD;
@@ -81,7 +83,9 @@ public class OuttakeIOTalonFX implements OuttakeIO {
 
     // Configure pivot motor
     var pivotConfig = new TalonFXConfiguration();
-    pivotConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;\n    pivotConfig.Voltage.PeakForwardVoltage = OuttakeConstants.PivotMotor.MAX_VOLTAGE;\n    pivotConfig.Voltage.PeakReverseVoltage = -OuttakeConstants.PivotMotor.MAX_VOLTAGE;
+    pivotConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+    pivotConfig.Voltage.PeakForwardVoltage = OuttakeConstants.PivotMotor.MAX_VOLTAGE;
+    pivotConfig.Voltage.PeakReverseVoltage = -OuttakeConstants.PivotMotor.MAX_VOLTAGE;
     pivotConfig.Slot0.kP = OuttakeConstants.PivotMotor.FeedBackController.kP;
     pivotConfig.Slot0.kI = OuttakeConstants.PivotMotor.FeedBackController.kI;
     pivotConfig.Slot0.kD = OuttakeConstants.PivotMotor.FeedBackController.kD;
@@ -152,12 +156,20 @@ public class OuttakeIOTalonFX implements OuttakeIO {
 
   @Override
   public void setOuttakeOpenLoop(double output) {
-    double clampedVolts =\n        Math.max(\n            -OuttakeConstants.OuttakeMotor.MAX_VOLTAGE,\n            Math.min(OuttakeConstants.OuttakeMotor.MAX_VOLTAGE, output));\n    outtakeTalon.setControl(outtakeVoltageRequest.withOutput(clampedVolts));
+    double clampedVolts =
+        Math.max(
+            -OuttakeConstants.OuttakeMotor.MAX_VOLTAGE,
+            Math.min(OuttakeConstants.OuttakeMotor.MAX_VOLTAGE, output));
+    outtakeTalon.setControl(outtakeVoltageRequest.withOutput(clampedVolts));
   }
 
   @Override
   public void setPivotOpenLoop(double output) {
-    double clampedVolts =\n        Math.max(\n            -OuttakeConstants.PivotMotor.MAX_VOLTAGE,\n            Math.min(OuttakeConstants.PivotMotor.MAX_VOLTAGE, output));\n    pivotTalon.setControl(pivotVoltageRequest.withOutput(clampedVolts));
+    double clampedVolts =
+        Math.max(
+            -OuttakeConstants.PivotMotor.MAX_VOLTAGE,
+            Math.min(OuttakeConstants.PivotMotor.MAX_VOLTAGE, output));
+    pivotTalon.setControl(pivotVoltageRequest.withOutput(clampedVolts));
   }
 
   @Override
