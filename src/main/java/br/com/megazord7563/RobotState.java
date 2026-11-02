@@ -38,4 +38,12 @@ public class RobotState {
   }
 
   // ── Setters ─────────────────────────────────────────────────────────────────
+
+  public void setRobotPose(Pose2d robotPose) {
+    RobotState.robotPose = robotPose;
+  }
+
+  public void setRobotVelocity(ChassisSpeeds robotVelocity) {
+    RobotState.robotVelocity = robotVelocity;
+  }
 }
