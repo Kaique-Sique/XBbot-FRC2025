@@ -10,6 +10,9 @@ import edu.wpi.first.units.measure.Current;
 public class RampConstants {
   public static final CANBus CAN_BUS = TunerConstants.kCANBus;
 
+  // TODO: Validate this provisional tolerance against the ramp geometry and required alignment.
+  public static final double POSITION_TOLERANCE_RAD = Math.toRadians(2.0);
+
   public static final class Motor {
     public static final int MOTOR_ID = 0; // TODO: Set a unique CAN ID before enabling this motor.
     public static final double MOTOR_GEAR_RATIO = 1.0; // TODO: Replace with the measured mechanism reduction before hardware operation.
