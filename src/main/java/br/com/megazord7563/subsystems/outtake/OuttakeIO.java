@@ -22,4 +22,16 @@ public interface OuttakeIO {
 
     /** Updates the set of loggable inputs. */
     public default void updateInputs(OuttakeIOInputs inputs) {}
+
+    /** Run the outtake motor at the specified open loop value. */
+    public default void setOuttakeOpenLoop(double output) {}
+
+    /** Run the pivot motor at the specified open loop value. */
+    public default void setPivotOpenLoop(double output) {}
+
+    /** Run the outtake motor at the specified velocity. */
+    public default void setOuttakeVelocity(double velocityRadPerSec) {}
+
+    /** Run the pivot motor to the specified rotation. */
+    public default void setPivotPosition(double positionRad) {}
 }
