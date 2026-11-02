@@ -39,7 +39,7 @@ public class ClimberConstants {
       }
     }
 
-    public static class VelocityController {
+    public static class FeedBackController {
       // Legacy Phoenix 6 velocity gains; validate after confirming the current mechanism ratio.
       public static final double kP = 0.0665;
       public static final double kI = 0.0;
