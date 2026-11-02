@@ -51,6 +51,7 @@ public class ClimberIOTalonFX implements ClimberIO {
 
     config.Slot0.kS = ClimberConstants.ClimberMotor.FeedForwardController.kS;
     config.Slot0.kV = ClimberConstants.ClimberMotor.FeedForwardController.kV;
+    config.Slot0.kA = ClimberConstants.ClimberMotor.FeedForwardController.kA;
     config.Slot0.kP = ClimberConstants.ClimberMotor.VelocityController.kP;
     config.Slot0.kI = ClimberConstants.ClimberMotor.VelocityController.kI;
     config.Slot0.kD = ClimberConstants.ClimberMotor.VelocityController.kD;
