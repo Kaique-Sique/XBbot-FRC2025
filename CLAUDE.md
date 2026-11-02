@@ -24,7 +24,7 @@ Nunca invente:
 
 ## Mecanismos conhecidos
 
-1. **Rampa passiva de coral:** mecanismo articulado em direção à estação de coral. A rampa foi descrita como passiva; não presuma que tenha motor ou atuador próprio.
+1. **Rampa de coral:** mecanismo articulado por um motor Kraken X60 dedicado, controlado por um TalonFX. A articulação é motorizada, mas a rampa conduz o coral passivamente para dentro do Outtake, sem transportá-lo ativamente. O subsistema Ramp deve permanecer independente do Outtake até que a integração seja especificada.
 2. **Manipulador de coral:** mecanismo articulado com rodas motorizadas.
 3. **Elevador:** sistema de elevação.
 4. **Intake de algae:** mecanismo articulado com rodas motorizadas.
@@ -62,4 +62,4 @@ O código da equipe 2910 é uma referência para estudar organização e decisõ
 
 ## Estado inicial
 
-Este repositório contém apenas documentação de contexto. A arquitetura detalhada e a implementação serão definidas em etapas, depois que o responsável terminar de apresentar os objetivos e requisitos.
+Os subsistemas Drive e Outtake possuem implementação inicial. O subsistema Ramp possui articulação motorizada por TalonFX e condução passiva do coral; seus parâmetros mecânicos e de controle ainda precisam ser confirmados.
