@@ -65,6 +65,7 @@ public class OuttakeConstants {
 
     public static final double MOTOR_INERTIA = 0.4; // TODO: Measure or calculate the pivot-side moment of inertia.
     public static final double MAX_VOLTAGE = 8.0;
+    public static final double POSITION_TOLERANCE_RAD = 0.2; // TODO: Tune this value
 
     // TODO: Calibrate Gains
     public static class FeedBackController {
