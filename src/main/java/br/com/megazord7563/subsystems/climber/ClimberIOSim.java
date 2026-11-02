@@ -11,14 +11,14 @@ public class ClimberIOSim implements ClimberIO {
   private final DCMotorSim motorSim;
   private final PIDController positionController =
       new PIDController(
-          ClimberConstants.Motor.SIM_POSITION_KP,
-          ClimberConstants.Motor.SIM_POSITION_KI,
-          ClimberConstants.Motor.SIM_POSITION_KD);
+          ClimberConstants.ClimberMotor.PositionController.SIM.kP,
+          ClimberConstants.ClimberMotor.PositionController.SIM.kI,
+          ClimberConstants.ClimberMotor.PositionController.SIM.kD);
   private final PIDController velocityController =
       new PIDController(
-          ClimberConstants.Motor.SIM_VELOCITY_KP,
-          ClimberConstants.Motor.SIM_VELOCITY_KI,
-          ClimberConstants.Motor.SIM_VELOCITY_KD);
+          ClimberConstants.ClimberMotor.VelocityController.SIM.kP,
+          ClimberConstants.ClimberMotor.VelocityController.SIM.kI,
+          ClimberConstants.ClimberMotor.VelocityController.SIM.kD);
 
   private enum ControlMode {
     VOLTAGE,
@@ -33,10 +33,10 @@ public class ClimberIOSim implements ClimberIO {
     motorSim =
         new DCMotorSim(
             LinearSystemId.createDCMotorSystem(
-                ClimberConstants.Motor.DC_MOTOR,
-                ClimberConstants.Motor.SIM_MOTOR_INERTIA,
-                ClimberConstants.Motor.MOTOR_GEAR_RATIO),
-            ClimberConstants.Motor.DC_MOTOR);
+                ClimberConstants.ClimberMotor.DC_MOTOR,
+                ClimberConstants.ClimberMotor.MOTOR_INERTIA,
+                ClimberConstants.ClimberMotor.MOTOR_GEAR_RATIO),
+            ClimberConstants.ClimberMotor.DC_MOTOR);
   }
 
   @Override
@@ -59,8 +59,8 @@ public class ClimberIOSim implements ClimberIO {
     appliedVolts =
         MathUtil.clamp(
             appliedVolts,
-            -ClimberConstants.Motor.MAX_VOLTAGE,
-            ClimberConstants.Motor.MAX_VOLTAGE);
+            -ClimberConstants.ClimberMotor.MAX_VOLTAGE,
+            ClimberConstants.ClimberMotor.MAX_VOLTAGE);
     motorSim.setInputVoltage(appliedVolts);
     motorSim.update(Constants.periodicLoopPeriod);
 
@@ -89,8 +89,8 @@ public class ClimberIOSim implements ClimberIO {
     appliedVolts =
         MathUtil.clamp(
             volts,
-            -ClimberConstants.Motor.MAX_VOLTAGE,
-            ClimberConstants.Motor.MAX_VOLTAGE);
+            -ClimberConstants.ClimberMotor.MAX_VOLTAGE,
+            ClimberConstants.ClimberMotor.MAX_VOLTAGE);
   }
 
   @Override
