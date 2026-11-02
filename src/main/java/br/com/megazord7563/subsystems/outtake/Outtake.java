@@ -110,8 +110,19 @@ public class Outtake extends SubsystemBase {
 
   /** Disables all outputs to motors. */
   public void stop() {
+    setCoast();
+  }
+
+  /** Disables all outputs to motors. */
+  public void setCoast() {
     hasActivePivotGoal = false;
-    io.stop();
+    io.setCoast();
+  }
+
+  /** Sets all outputs to motors to brake mode. */
+  public void setBrake() {
+    hasActivePivotGoal = false;
+    io.setBrake();
   }
 
   // ── Getters ─────────────────────────────────────────────────────────────────

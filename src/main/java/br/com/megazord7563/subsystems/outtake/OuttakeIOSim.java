@@ -134,15 +134,47 @@ public class OuttakeIOSim implements OuttakeIO {
   @Override
   public void setPivotPosition(double positionRad) {
     pivotClosedLoop = true;
-    // Position is not a valid input to kS/kV feedforward. Keep this at zero until a
+    // TODO: Position is not a valid input to kS/kV feedforward. Keep this at zero until a
     // characterized gravity feedforward (kG) and motion feedforward are implemented.
     pivotFFVolts = 0.0;
     pivotController.setSetpoint(positionRad);
   }
 
   @Override
-  public void stop() {
-    setOuttakeOpenLoop(0.0);
-    setPivotOpenLoop(0.0);
+  public void setCoast()  {
+    setPivotCoast();
+    setOuttakeCoast();
+  }
+
+  @Override 
+  public void setPivotCoast() {
+    pivotClosedLoop = false;
+    pivotAppliedVolts = 0.0;
+  }
+
+  @Override 
+  public void setOuttakeCoast() {
+    outtakeClosedLoop = false;
+    outtakeAppliedVolts = 0.0;
+  }
+
+  @Override
+  public void setBrake()  {
+    setPivotBrake();
+    setOuttakeBrake();
+  }
+
+  @Override
+  public void setPivotBrake()  {
+    // In simulation, braking is the same as coasting.
+    pivotClosedLoop = false;
+    pivotAppliedVolts = 0.0;
+  }
+
+  @Override
+  public void setOuttakeBrake()  {
+    // In simulation, braking is the same as coasting.
+    outtakeClosedLoop = false;
+    outtakeAppliedVolts = 0.0;
   }
 }

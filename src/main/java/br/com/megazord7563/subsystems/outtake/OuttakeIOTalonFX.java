@@ -6,6 +6,8 @@ import static edu.wpi.first.units.Units.*;
 import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.CoastOut;
+import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
@@ -34,6 +36,9 @@ public class OuttakeIOTalonFX implements OuttakeIO {
   private final VelocityVoltage outtakeVelocityVoltageRequest = new VelocityVoltage(0.0);
   private final VoltageOut pivotVoltageRequest = new VoltageOut(0.0);
   private final PositionVoltage pivotPositionVoltageRequest = new PositionVoltage(0.0);
+
+  private final NeutralOut brakeRequest = new NeutralOut();
+  private final CoastOut coastRequest = new CoastOut();
 
   // Status signals from outtake motor
   private final StatusSignal<Angle> outtakePosition;
@@ -185,8 +190,36 @@ public class OuttakeIOTalonFX implements OuttakeIO {
   }
 
   @Override
-  public void stop() {
-    outtakeTalon.setControl(outtakeVoltageRequest.withOutput(0.0));
-    pivotTalon.setControl(pivotVoltageRequest.withOutput(0.0));
+  public void setCoast() {
+    setOuttakeCoast();
+    setPivotCoast();
+  }
+
+  @Override 
+  public void setOuttakeCoast() {
+    outtakeTalon.setControl(coastRequest);
+  }
+
+  @Override 
+  public void setPivotCoast() {
+    pivotTalon.setControl(coastRequest);
+  }
+
+  @Override
+  public void setBrake() {
+    setOuttakeBrake();
+    setPivotBrake();
+  }
+
+  @Override 
+  public void setOuttakeBrake()
+  {
+    outtakeTalon.setControl(brakeRequest);
+  }
+
+  @Override 
+  public void setPivotBrake()
+  {
+    pivotTalon.setControl(brakeRequest);
   }
 }

@@ -34,9 +34,27 @@ public interface OuttakeIO {
   /** Run the pivot motor to the specified rotation. */
   public default void setPivotPosition(double positionRad) {}
 
+  /** Sets the only outtake motor to coast mode. */
+  public default void setOuttakeCoast() {}
+
+  /** Sets the only pivot motor to coast mode. */
+  public default void setPivotCoast() {}
+  
+  /** Sets the only outtake motor to brake mode. */
+  public default void setOuttakeBrake() {}
+
+  /** Sets the only pivot motor to brake mode. */
+  public default void setPivotBrake() {}
+
   /** Disables outputs to all motors. */
-  public default void stop() {
-    setOuttakeOpenLoop(0.0);
-    setPivotOpenLoop(0.0);
+  public default void setCoast() {
+    setOuttakeCoast();
+    setPivotCoast();
+  }
+
+  /** Brake all motors. */
+  public default void setBrake() {
+    setOuttakeBrake(); 
+    setPivotBrake();
   }
 }
