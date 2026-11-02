@@ -1,54 +1,144 @@
-# XBbot — FRC 2025 REEFSCAPE
+# XBbot — FIRST Robotics Competition
 
-Robot software for XBbot's **2025 FIRST Robotics Competition (REEFSCAPE)** season.
+<p align="center">
+  <img src="assets/DSCN2621.JPG" alt="XBbot robot" width="720">
+</p>
 
-## Planned Mechanisms
+<p align="center">
+  <strong>Robot code, configuration, and engineering assets for the XBbot FRC project.</strong>
+</p>
 
-1. **Passive coral intake ramp** — an articulated ramp angled toward the coral station.
-2. **Coral manipulator** — an articulated mechanism with powered wheels.
-3. **Elevator** — a lifting mechanism.
-4. **Algae intake** — an articulated mechanism with powered wheels.
+<p align="center">
+  <a href="assets/DSCN2629.MP4">Watch the robot video</a>
+  ·
+  <a href="ascope/Robot_XBbot/config.json">AdvantageScope robot configuration</a>
+</p>
 
-Sensors, actuators, motor controllers, CAN IDs, mechanical limits, and tuning parameters have not been specified yet. Do not assume or invent hardware details or values.
+---
 
+## About the project
 
-## Getting Started
+XBbot is a FIRST Robotics Competition robot project built with Java and WPILib. The codebase uses the command-based framework and includes a swerve-drive implementation with real-robot, simulation, and log-replay I/O paths.
 
-1. Clone this repository.
-2. Install the WPILib 2025 development environment and a compatible JDK (Java 17).
-3. Make sure the Gradle Wrapper files are present in the repository:
-   - `gradlew`
-   - `gradlew.bat`
-   - `gradle/wrapper/gradle-wrapper.jar`
-   - `gradle/wrapper/gradle-wrapper.properties`
-4. On Linux or macOS, make the wrapper executable if needed:
-   ```bash
-   chmod +x gradlew
-   ```
-5. Run the wrapper from the repository root to download Gradle and resolve the project dependencies.
+The repository also contains robot media, AdvantageScope assets, PathPlanner files, and development automation.
 
-> **Note:** The Gradle Wrapper files have not been added to this repository yet. The commands below document the intended workflow and will work once a WPILib robot project and its wrapper have been added.
+> **Hardware note:** Treat the source code and configuration as the current implementation reference. Verify device models, CAN IDs, wiring, and calibration values against the robot before deploying. This README intentionally does not infer hardware specifications that are not documented in the project.
 
-## Common Gradle Commands
+## Robot
 
-Run these commands from the repository root.
+The repository includes a photo of XBbot and a recorded video:
 
->[!INFO]
->
-> JDK 17 or latest
+- **Robot photo:** [assets/DSCN2621.JPG](assets/DSCN2621.JPG)
+- **Robot video:** [assets/DSCN2629.MP4](assets/DSCN2629.MP4)
 
-| Task | Linux / macOS | Windows PowerShell |
+Media files are stored with Git LFS. Make sure Git LFS is installed and initialized before cloning or pulling if you want the full media files rather than LFS pointer files.
+
+## Software stack
+
+| Component | Project configuration |
+|---|---|
+| Language | Java |
+| Java compatibility | 17 |
+| Build system | Gradle Wrapper |
+| WPILib build plugin | GradleRIO 2026.2.1 |
+| Robot framework | WPILib Command-Based |
+| Drive architecture | Swerve drive |
+| Logging and replay | AdvantageKit |
+| Autonomous paths | PathPlanner |
+| Code formatting | Spotless / Google Java Format |
+
+The versions above reflect the checked-in Gradle configuration. Use a compatible WPILib development environment when opening or building the project.
+
+## Repository layout
+
+```text
+.
+├── .github/
+│   ├── scripts/             # Vendordep update automation
+│   └── workflows/           # CI build and dependency update workflows
+├── ascope/
+│   └── Robot_XBbot/          # AdvantageScope robot assets and configuration
+├── assets/                   # Robot photo and video (Git LFS)
+├── gradle/wrapper/           # Gradle Wrapper runtime
+├── src/main/
+│   ├── deploy/pathplanner/   # Autonomous paths and field navigation data
+│   └── java/                 # Robot, commands, subsystems, and utilities
+├── build.gradle
+├── gradlew
+└── gradlew.bat
+```
+
+## Getting started
+
+### Requirements
+
+- Git
+- Git LFS (for the full-resolution media assets)
+- WPILib development environment compatible with the project's GradleRIO version
+- JDK 17
+
+### Clone the repository
+
+```bash
+git lfs install
+git clone https://github.com/Kaique-Sique/XBbot-FRC2025.git
+cd XBbot-FRC2025
+```
+
+If the repository has already been cloned without LFS, run:
+
+```bash
+git lfs pull
+```
+
+### Build the project
+
+The Gradle Wrapper is included in the repository, so a separate Gradle installation is not required.
+
+**Linux / macOS**
+
+```bash
+chmod +x gradlew
+./gradlew build
+```
+
+**Windows (PowerShell)**
+
+```powershell
+.\gradlew.bat build
+```
+
+## Common commands
+
+Run commands from the repository root.
+
+| Task | Linux / macOS | Windows |
 |---|---|---|
-| Build the project | `./gradlew build` | `.\gradlew.bat build` |
-| Deploy to the robot | `./gradlew deploy` | `.\gradlew.bat deploy` |
-| Run unit tests | `./gradlew test` | `.\gradlew.bat test` |
-| List available tasks | `./gradlew tasks` | `.\gradlew.bat tasks` |
-| Build without running tests | `./gradlew assemble` | `.\gradlew.bat assemble` |
+| Build | `./gradlew build` | `.\gradlew.bat build` |
+| Run tests | `./gradlew test` | `.\gradlew.bat test` |
+| Deploy to the RoboRIO | `./gradlew deploy` | `.\gradlew.bat deploy` |
+| List Gradle tasks | `./gradlew tasks` | `.\gradlew.bat tasks` |
+| Assemble artifacts | `./gradlew assemble` | `.\gradlew.bat assemble` |
+| Watch AdvantageKit replay | `./gradlew replayWatch` | `.\gradlew.bat replayWatch` |
 
-For more detailed build output, append `--info` to a command.
+Deployment requires a correctly configured team number and a connected/available RoboRIO. Confirm the target hardware and deployment settings before running the deploy task.
 
-## Development Environment
+## Development tools and assets
 
-- **Recommended IDE:** Visual Studio Code with the WPILib extension.
-- **Java:** JDK 17, matching the WPILib 2025 toolchain.
-- **Build system:** Gradle through the project-provided Gradle Wrapper.
+- **AdvantageScope:** The robot configuration is located at [ascope/Robot_XBbot/config.json](ascope/Robot_XBbot/config.json). Open the configuration and associated model assets in AdvantageScope.
+- **PathPlanner:** Autonomous path and navigation files are under [src/main/deploy/pathplanner](src/main/deploy/pathplanner).
+- **Vendordeps:** Third-party robot libraries are managed through the project's `vendordeps/` directory.
+- **GitHub Actions:** Build and vendordep update workflows are located in [.github/workflows](.github/workflows).
+
+## Contributing
+
+1. Create a feature branch from `main`.
+2. Keep changes focused and document hardware-dependent assumptions.
+3. Run the relevant Gradle build or test tasks.
+4. Open a pull request with a concise description and validation notes.
+
+When changing robot hardware, update the related code and configuration together, and verify all wiring, CAN IDs, offsets, and limits on the physical robot.
+
+## License
+
+See [LICENSE](LICENSE) and the third-party license notices in the repository for applicable terms.
