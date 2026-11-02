@@ -122,9 +122,7 @@ public class OuttakeIOSim implements OuttakeIO {
   @Override
   public void setPivotPosition(double positionRad) {
     pivotClosedLoop = true;
-    pivotFFVolts =
-        OuttakeConstants.PivotMotor.FeedForwardController.SIM.kS * Math.signum(positionRad)
-            + OuttakeConstants.PivotMotor.FeedForwardController.SIM.kV * positionRad;
+    // Position is not a valid input to kS/kV feedforward. Keep this at zero until a\n    // characterized gravity feedforward (kG) and motion feedforward are implemented.\n    pivotFFVolts = 0.0;
     pivotController.setSetpoint(positionRad);
   }
 
