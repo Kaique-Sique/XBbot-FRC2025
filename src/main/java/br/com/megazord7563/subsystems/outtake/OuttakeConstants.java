@@ -20,8 +20,7 @@ public class OuttakeConstants {
     public static final Current SUPPLY_CURRENT_LIMIT = Amps.of(30);
 
     public static final double MOTOR_INERTIA = 0.2; // TODO: Calibrate Inertia
-	public static final double MAX_VOLTAGE = 8;
-
+    public static final double MAX_VOLTAGE = 8;
 
     // TODO: Calibrate Gains
     public static class FeedBackController {

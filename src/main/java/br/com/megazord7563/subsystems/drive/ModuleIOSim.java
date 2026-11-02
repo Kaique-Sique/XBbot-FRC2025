@@ -7,11 +7,10 @@
 
 package br.com.megazord7563.subsystems.drive;
 
+import br.com.megazord7563.Constants;
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.swerve.SwerveModuleConstants;
-
-import br.com.megazord7563.Constants;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
