@@ -2,21 +2,31 @@ package br.com.megazord7563.subsystems.climber;
 
 import br.com.megazord7563.Constants;
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.system.plant.LinearSystemId;
+import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.wpilibj.simulation.DCMotorSim;
 
 /** Physics simulation IO implementation for the Climber subsystem. */
 public class ClimberIOSim implements ClimberIO {
   private final DCMotorSim motorSim;
-  private final PIDController positionController =
-      new PIDController(
+  private final ProfiledPIDController positionController =
+      new ProfiledPIDController(
           ClimberConstants.ClimberMotor.FeedBackController.SIM.kP,
           ClimberConstants.ClimberMotor.FeedBackController.SIM.kI,
-          ClimberConstants.ClimberMotor.FeedBackController.SIM.kD);
+          ClimberConstants.ClimberMotor.FeedBackController.SIM.kD,
+          new Constraints(
+              ClimberConstants.ClimberMotor.MotionMagic.CRUISE_VELOCITY * 2.0 * Math.PI,
+              ClimberConstants.ClimberMotor.MotionMagic.ACCELERATION * 2.0 * Math.PI));
+  private final SimpleMotorFeedforward feedforward =
+      new SimpleMotorFeedforward(
+          ClimberConstants.ClimberMotor.FeedForwardController.SIM.kS,
+          ClimberConstants.ClimberMotor.FeedForwardController.SIM.kV,
+          ClimberConstants.ClimberMotor.FeedForwardController.SIM.kA);
 
-  private boolean climberClosedLoop = false;
-  private double climberFFVolts = 0.0;
+  private boolean closedLoop = false;
+  private double goalPositionRad = 0.0;
   private double appliedVolts = 0.0;
 
   public ClimberIOSim() {
@@ -31,14 +41,11 @@ public class ClimberIOSim implements ClimberIO {
 
   @Override
   public void updateInputs(ClimberIOInputs inputs) {
-    if(climberClosedLoop)
-    {
-      appliedVolts = 
-        climberFFVolts + positionController.calculate(motorSim.getAngularPositionRad());
-    }
-    else
-    {
-      positionController.reset();
+    if (closedLoop) {
+      double feedbackVolts =
+          positionController.calculate(motorSim.getAngularPositionRad(), goalPositionRad);
+      double feedforwardVolts = feedforward.calculate(positionController.getSetpoint().velocity);
+      appliedVolts = feedbackVolts + feedforwardVolts;
     }
 
     appliedVolts =
@@ -58,13 +65,17 @@ public class ClimberIOSim implements ClimberIO {
 
   @Override
   public void setPosition(double positionRad) {
-    climberClosedLoop = true;
-    positionController.setSetpoint(positionRad);
+    if (!closedLoop) {
+      positionController.reset(
+          motorSim.getAngularPositionRad(), motorSim.getAngularVelocityRadPerSec());
+    }
+    closedLoop = true;
+    goalPositionRad = positionRad;
   }
 
   @Override
   public void setVoltage(double volts) {
-    climberClosedLoop = false;
+    closedLoop = false;
     appliedVolts =
         MathUtil.clamp(
             volts,
