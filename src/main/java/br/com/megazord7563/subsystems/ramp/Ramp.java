@@ -15,6 +15,8 @@ public class Ramp extends SubsystemBase {
   private final RampIO io;
   private final RampIOInputsAutoLogged inputs = new RampIOInputsAutoLogged();
   private final Alert motorDisconnectedAlert;
+  private double goalPositionRad;
+  private boolean hasActiveGoal;
 
   /** Creates a new Ramp subsystem. */
   public Ramp(RampIO io) {
@@ -38,11 +40,14 @@ public class Ramp extends SubsystemBase {
 
   /** Runs the ramp motor with the specified open-loop voltage. */
   public void setVoltage(double volts) {
+    hasActiveGoal = false;
     io.setVoltage(volts);
   }
 
   /** Moves the ramp to the specified position in radians. */
   public void setPosition(double positionRad) {
+    goalPositionRad = positionRad;
+    hasActiveGoal = true;
     io.setPosition(positionRad);
   }
 
@@ -51,12 +56,25 @@ public class Ramp extends SubsystemBase {
     setPosition(rotation.getRadians());
   }
 
-  /** Disables the ramp motor output. */
+  /** Disables the ramp motor output and clears the active position goal. */
   public void stop() {
+    hasActiveGoal = false;
     io.stop();
   }
 
   // ── Getters ─────────────────────────────────────────────────────────────────
+
+  /**
+   * Returns whether the ramp is within the configured tolerance of its active position goal.
+   *
+   * <p>This reports position error only; it does not guarantee that the mechanism has settled.
+   */
+  @AutoLogOutput(key = "Ramp/AtGoal")
+  public boolean atGoal() {
+    return hasActiveGoal
+        && Math.abs(getPositionRad() - goalPositionRad)
+            <= RampConstants.POSITION_TOLERANCE_RAD;
+  }
 
   @AutoLogOutput(key = "Ramp/PositionRad")
   public double getPositionRad() {
