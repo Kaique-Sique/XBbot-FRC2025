@@ -35,41 +35,41 @@ public class ClimberIOTalonFX implements ClimberIO {
       new Debouncer(0.5, Debouncer.DebounceType.kFalling);
 
   public ClimberIOTalonFX() {
-    motor = new TalonFX(ClimberConstants.Motor.MOTOR_ID, ClimberConstants.CAN_BUS);
+    motor = new TalonFX(ClimberConstants.ClimberMotor.MOTOR_ID, ClimberConstants.CAN_BUS);
 
     var config = new TalonFXConfiguration();
     config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
     config.MotorOutput.Inverted =
-        ClimberConstants.Motor.MOTOR_INVERTED
+        ClimberConstants.ClimberMotor.MOTOR_INVERTED
             ? InvertedValue.Clockwise_Positive
             : InvertedValue.CounterClockwise_Positive;
-    config.Voltage.PeakForwardVoltage = ClimberConstants.Motor.MAX_VOLTAGE;
-    config.Voltage.PeakReverseVoltage = -ClimberConstants.Motor.MAX_VOLTAGE;
+    config.Voltage.PeakForwardVoltage = ClimberConstants.ClimberMotor.MAX_VOLTAGE;
+    config.Voltage.PeakReverseVoltage = -ClimberConstants.ClimberMotor.MAX_VOLTAGE;
     config.ClosedLoopRamps.VoltageClosedLoopRampPeriod =
-        ClimberConstants.Motor.CLOSED_LOOP_RAMP_PERIOD;
-    config.Feedback.SensorToMechanismRatio = ClimberConstants.Motor.MOTOR_GEAR_RATIO;
+        ClimberConstants.ClimberMotor.CLOSED_LOOP_RAMP_PERIOD;
+    config.Feedback.SensorToMechanismRatio = ClimberConstants.ClimberMotor.MOTOR_GEAR_RATIO;
 
-    config.Slot0.kS = ClimberConstants.Motor.VELOCITY_KS;
-    config.Slot0.kV = ClimberConstants.Motor.VELOCITY_KV;
-    config.Slot0.kP = ClimberConstants.Motor.VELOCITY_KP;
-    config.Slot0.kI = ClimberConstants.Motor.VELOCITY_KI;
-    config.Slot0.kD = ClimberConstants.Motor.VELOCITY_KD;
+    config.Slot0.kS = ClimberConstants.ClimberMotor.FeedForwardController.kS;
+    config.Slot0.kV = ClimberConstants.ClimberMotor.FeedForwardController.kV;
+    config.Slot0.kP = ClimberConstants.ClimberMotor.VelocityController.kP;
+    config.Slot0.kI = ClimberConstants.ClimberMotor.VelocityController.kI;
+    config.Slot0.kD = ClimberConstants.ClimberMotor.VelocityController.kD;
 
-    config.Slot1.kP = ClimberConstants.Motor.POSITION_KP;
-    config.Slot1.kI = ClimberConstants.Motor.POSITION_KI;
-    config.Slot1.kD = ClimberConstants.Motor.POSITION_KD;
+    config.Slot1.kP = ClimberConstants.ClimberMotor.PositionController.kP;
+    config.Slot1.kI = ClimberConstants.ClimberMotor.PositionController.kI;
+    config.Slot1.kD = ClimberConstants.ClimberMotor.PositionController.kD;
 
     config.MotionMagic.MotionMagicCruiseVelocity =
-        ClimberConstants.Motor.MOTION_MAGIC_CRUISE_VELOCITY;
+        ClimberConstants.ClimberMotor.MotionMagic.CRUISE_VELOCITY;
     config.MotionMagic.MotionMagicAcceleration =
-        ClimberConstants.Motor.MOTION_MAGIC_ACCELERATION;
-    config.MotionMagic.MotionMagicJerk = ClimberConstants.Motor.MOTION_MAGIC_JERK;
+        ClimberConstants.ClimberMotor.MotionMagic.ACCELERATION;
+    config.MotionMagic.MotionMagicJerk = ClimberConstants.ClimberMotor.MotionMagic.JERK;
 
     config.CurrentLimits.SupplyCurrentLimit =
-        ClimberConstants.Motor.SUPPLY_CURRENT_LIMIT.in(edu.wpi.first.units.Units.Amps);
+        ClimberConstants.ClimberMotor.SUPPLY_CURRENT_LIMIT.in(edu.wpi.first.units.Units.Amps);
     config.CurrentLimits.SupplyCurrentLimitEnable = true;
     config.CurrentLimits.StatorCurrentLimit =
-        ClimberConstants.Motor.STATOR_CURRENT_LIMIT.in(edu.wpi.first.units.Units.Amps);
+        ClimberConstants.ClimberMotor.STATOR_CURRENT_LIMIT.in(edu.wpi.first.units.Units.Amps);
     config.CurrentLimits.StatorCurrentLimitEnable = true;
     tryUntilOk(5, () -> motor.getConfigurator().apply(config, 0.25));
 
@@ -106,8 +106,8 @@ public class ClimberIOTalonFX implements ClimberIO {
   public void setVoltage(double volts) {
     double clampedVolts =
         Math.max(
-            -ClimberConstants.Motor.MAX_VOLTAGE,
-            Math.min(ClimberConstants.Motor.MAX_VOLTAGE, volts));
+            -ClimberConstants.ClimberMotor.MAX_VOLTAGE,
+            Math.min(ClimberConstants.ClimberMotor.MAX_VOLTAGE, volts));
     motor.setControl(voltageRequest.withOutput(clampedVolts));
   }
 
