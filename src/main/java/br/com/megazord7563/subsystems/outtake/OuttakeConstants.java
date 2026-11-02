@@ -25,6 +25,9 @@ public class OuttakeConstants {
     public static final double MOTOR_INERTIA = 0.2; // TODO: Measure or calculate the mechanism-side moment of inertia.
     public static final double MAX_VOLTAGE = 8.0;
 
+    // TODO: Validate this tolerance against the pivot alignment requirements.
+    public static final double POSITION_TOLERANCE_RAD = Math.toRadians(2.0);
+
     // TODO: Characterize and tune these gains before using closed-loop control.
     public static class FeedBackController {
       public static final double kP = 0.0;
