@@ -24,6 +24,9 @@ public class Outtake extends SubsystemBase {
   private final OuttakeIO io;
   private final OuttakeIOInputsAutoLogged inputs = new OuttakeIOInputsAutoLogged();
 
+  private double pivotGoalPositionRad;
+  private boolean hasActivePivotGoal;
+
   private final Alert outtakeDisconnectedAlert;
   private final Alert pivotDisconnectedAlert;
   private final SysIdRoutine sysId;
@@ -77,6 +80,7 @@ public class Outtake extends SubsystemBase {
 
   /** Runs the pivot motor with the specified open loop voltage. */
   public void setPivotOpenLoop(double output) {
+    hasActivePivotGoal = false;
     io.setPivotOpenLoop(output);
   }
 
@@ -87,6 +91,8 @@ public class Outtake extends SubsystemBase {
 
   /** Runs the pivot motor to the specified rotation in radians. */
   public void setPivotPosition(double positionRad) {
+    pivotGoalPositionRad = positionRad;
+    hasActivePivotGoal = true;
     io.setPivotPosition(positionRad);
   }
 
@@ -97,12 +103,14 @@ public class Outtake extends SubsystemBase {
 
   /** Runs the outtake with the specified output while controlling pivot to zero radians. */
   public void runCharacterization(double output) {
+    hasActivePivotGoal = false;
     io.setOuttakeOpenLoop(output);
     io.setPivotPosition(0.0);
   }
 
   /** Disables all outputs to motors. */
   public void stop() {
+    hasActivePivotGoal = false;
     io.stop();
   }
 
@@ -130,6 +138,14 @@ public class Outtake extends SubsystemBase {
 
   public boolean isOuttakeConnected() {
     return inputs.outtakeMotorConnected;
+  }
+
+  /** Returns whether the pivot is within the configured tolerance of its active position goal. */
+  @AutoLogOutput(key = "Outtake/PivotAtGoal")
+  public boolean atGoal() {
+    return hasActivePivotGoal
+        && Math.abs(pivotGoalPositionRad - inputs.pivotMotorPositionRad)
+            <= OuttakeConstants.PivotMotor.POSITION_TOLERANCE_RAD;
   }
 
   @AutoLogOutput(key = "Outtake/PivotPositionRad")
