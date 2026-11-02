@@ -12,6 +12,10 @@ import br.com.megazord7563.subsystems.outtake.Outtake;
 import br.com.megazord7563.subsystems.outtake.OuttakeIO;
 import br.com.megazord7563.subsystems.outtake.OuttakeIOSim;
 import br.com.megazord7563.subsystems.outtake.OuttakeIOTalonFX;
+import br.com.megazord7563.subsystems.ramp.Ramp;
+import br.com.megazord7563.subsystems.ramp.RampIO;
+import br.com.megazord7563.subsystems.ramp.RampIOSim;
+import br.com.megazord7563.subsystems.ramp.RampIOTalonFX;
 import com.pathplanner.lib.auto.AutoBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -33,6 +37,7 @@ public class RobotContainer {
   // Subsystems
   private final DriveSubsystem driveSubsystem;
   private final Outtake outtake;
+  private final Ramp ramp;
 
   // Controller
   private final CommandXboxController controller = new CommandXboxController(0);
@@ -52,6 +57,7 @@ public class RobotContainer {
                 new ModuleIOTalonFX(TunerConstants.BackLeft),
                 new ModuleIOTalonFX(TunerConstants.BackRight));
         outtake = new Outtake(new OuttakeIOTalonFX());
+        ramp = new Ramp(new RampIOTalonFX());
         break;
 
       case SIM:
@@ -64,6 +70,7 @@ public class RobotContainer {
                 new ModuleIOSim(TunerConstants.BackLeft),
                 new ModuleIOSim(TunerConstants.BackRight));
         outtake = new Outtake(new OuttakeIOSim());
+        ramp = new Ramp(new RampIOSim());
         break;
 
       default:
@@ -76,6 +83,7 @@ public class RobotContainer {
                 new ModuleIO() {},
                 new ModuleIO() {});
         outtake = new Outtake(new OuttakeIO() {});
+        ramp = new Ramp(new RampIO() {});
         break;
     }
 
@@ -167,6 +175,11 @@ public class RobotContainer {
   /** Use this to pass the outtake subsystem to the main {@link Robot} class. */
   public Outtake getOuttake() {
     return outtake;
+  }
+
+  /** Use this to pass the ramp subsystem to the main {@link Robot} class. */
+  public Ramp getRamp() {
+    return ramp;
   }
 
   /**
