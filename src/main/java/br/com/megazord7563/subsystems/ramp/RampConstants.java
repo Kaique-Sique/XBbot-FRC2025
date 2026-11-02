@@ -14,7 +14,6 @@ public class RampConstants {
     public static final int MOTOR_ID = 0; // TODO: Set a unique CAN ID before enabling this motor.
     public static final double MOTOR_GEAR_RATIO = 1.0; // TODO: Replace with the measured mechanism reduction.
     public static final boolean MOTOR_INVERTED = false; // TODO: Verify motor direction on the robot.
-    public static final DCMOTOR_PLACEHOLDER UNUSED = null;
     public static final DCMotor DC_MOTOR = DCMotor.getKrakenX60Foc(1);
 
     public static final Current STATOR_CURRENT_LIMIT = Amps.of(80);
