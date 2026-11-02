@@ -38,8 +38,12 @@ public class OuttakeConstants {
       }
     }
 
-    // TODO: Add a characterized gravity feedforward (kG) after defining the pivot zero angle.
-    public static class FeedForwardController {\n      public static final double kV = 0.0;\n      public static final double kS = 0.0;\n      public static final double kA = 0.0;\n\n      public static class SIM {
+    public static class FeedForwardController {
+      public static final double kV = 0.0;
+      public static final double kS = 0.0;
+      public static final double kA = 0.0;
+
+      public static class SIM {
         public static final double kV = 0.0;
         public static final double kS = 0.0;
         public static final double kA = 0.0;
@@ -72,6 +76,7 @@ public class OuttakeConstants {
       }
     }
 
+    // TODO: Add a characterized gravity feedforward (kG) after defining the pivot zero angle.
     public static class FeedForwardController {
       public static final double kV = 0.0;
       public static final double kS = 0.0;
