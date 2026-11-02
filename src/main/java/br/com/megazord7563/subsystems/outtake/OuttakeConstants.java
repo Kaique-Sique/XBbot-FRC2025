@@ -15,7 +15,7 @@ public class OuttakeConstants {
 
   public static final class OuttakeMotor {
     public static final int MOTOR_ID = 0; // TODO: Set a unique CAN ID before enabling this motor on the robot.
-    public static final double MOTOR_GEAR_RATIO = 1.0; // TODO: Replace with the measured mechanism reduction. // TODO: Replace with the measured mechanism reduction.
+    public static final double MOTOR_GEAR_RATIO = 1.0; // TODO: Replace with the measured mechanism reduction.
     public static final boolean MOTOR_INVERTED = false;
     public static final DCMotor DC_MOTOR = DCMotor.getKrakenX60Foc(1);
 
@@ -38,12 +38,8 @@ public class OuttakeConstants {
       }
     }
 
-    // TODO: Add a characterized gravity feedforward (kG) for the pivot once its zero angle is defined.\n    public static class FeedForwardController {
-      public static final double kV = 0.0;
-      public static final double kS = 0.0;
-      public static final double kA = 0.0;
-
-      public static class SIM {
+    // TODO: Add a characterized gravity feedforward (kG) after defining the pivot zero angle.
+    public static class FeedForwardController {\n      public static final double kV = 0.0;\n      public static final double kS = 0.0;\n      public static final double kA = 0.0;\n\n      public static class SIM {
         public static final double kV = 0.0;
         public static final double kS = 0.0;
         public static final double kA = 0.0;
