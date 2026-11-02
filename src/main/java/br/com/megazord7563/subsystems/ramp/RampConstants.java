@@ -25,11 +25,15 @@ public class RampConstants {
     public static final DCMotor DC_MOTOR = DCMotor.getKrakenX60Foc(1);
 
     // Legacy Spark MAX current limits are not directly equivalent to Phoenix 6 current limits.
-    public static final Current STATOR_CURRENT_LIMIT = Amps.of(80); // TODO: Validate on the Kraken X60.
-    public static final Current SUPPLY_CURRENT_LIMIT = Amps.of(30); // TODO: Validate for the power budget.
+    public static final Current STATOR_CURRENT_LIMIT =
+        Amps.of(80); // TODO: Validate on the Kraken X60.
+    public static final Current SUPPLY_CURRENT_LIMIT =
+        Amps.of(30); // TODO: Validate for the power budget.
 
-    public static final double MOTOR_INERTIA = 0.2; // TODO: Replace this simulation placeholder with measured mechanism inertia.
-    public static final double MAX_VOLTAGE = 8.0; // TODO: Confirm a safe voltage limit for the mechanism.
+    public static final double MOTOR_INERTIA =
+        0.2; // TODO: Replace this simulation placeholder with measured mechanism inertia.
+    public static final double MAX_VOLTAGE =
+        8.0; // TODO: Confirm a safe voltage limit for the mechanism.
 
     // Legacy gains (Spark MAX MAXMotion position control, in encoder-position units) are not
     // portable to this Kraken X60/Phoenix 6 position loop. Retune after validating the mechanism.
@@ -45,7 +49,8 @@ public class RampConstants {
       }
     }
 
-    // TODO: Characterize motion feedforward and gravity compensation after defining ramp geometry and zero angle.
+    // TODO: Characterize motion feedforward and gravity compensation after defining ramp geometry
+    // and zero angle.
     public static class FeedForwardController {
       public static final double kV = 0.0;
       public static final double kS = 0.0;

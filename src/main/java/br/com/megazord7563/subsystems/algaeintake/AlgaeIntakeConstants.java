@@ -25,9 +25,12 @@ public class AlgaeIntakeConstants {
 
     // Keep conservative provisional limits; the legacy Spark MAX limit is not directly
     // equivalent to Phoenix 6 stator/supply current limits.
-    public static final Current STATOR_CURRENT_LIMIT = Amps.of(80); // TODO: Validate on the Kraken X60.
-    public static final Current SUPPLY_CURRENT_LIMIT = Amps.of(30); // TODO: Validate for the power budget.
-    public static final double MOTOR_INERTIA = 0.2; // TODO: Replace simulation placeholder with measured inertia.
+    public static final Current STATOR_CURRENT_LIMIT =
+        Amps.of(80); // TODO: Validate on the Kraken X60.
+    public static final Current SUPPLY_CURRENT_LIMIT =
+        Amps.of(30); // TODO: Validate for the power budget.
+    public static final double MOTOR_INERTIA =
+        0.2; // TODO: Replace simulation placeholder with measured inertia.
     public static final double MAX_VOLTAGE = 8.0; // TODO: Confirm a safe voltage limit.
 
     // Legacy gains were tuned for a NEO/Spark MAX position controller and are not portable to
@@ -44,7 +47,8 @@ public class AlgaeIntakeConstants {
       }
     }
 
-    // TODO: Characterize motion feedforward and gravity compensation after defining geometry and zero angle.
+    // TODO: Characterize motion feedforward and gravity compensation after defining geometry and
+    // zero angle.
     public static class FeedForwardController {
       public static final double kV = 0.0;
       public static final double kS = 0.0;
@@ -69,9 +73,12 @@ public class AlgaeIntakeConstants {
     public static final DCMotor DC_MOTOR = DCMotor.getKrakenX60Foc(1);
 
     // Legacy Spark MAX current limits are not directly equivalent to Phoenix 6 current limits.
-    public static final Current STATOR_CURRENT_LIMIT = Amps.of(80); // TODO: Validate on the Kraken X60.
-    public static final Current SUPPLY_CURRENT_LIMIT = Amps.of(30); // TODO: Validate for the power budget.
-    public static final double MOTOR_INERTIA = 0.02; // TODO: Replace simulation placeholder with measured inertia.
+    public static final Current STATOR_CURRENT_LIMIT =
+        Amps.of(80); // TODO: Validate on the Kraken X60.
+    public static final Current SUPPLY_CURRENT_LIMIT =
+        Amps.of(30); // TODO: Validate for the power budget.
+    public static final double MOTOR_INERTIA =
+        0.02; // TODO: Replace simulation placeholder with measured inertia.
     public static final double MAX_VOLTAGE = 8.0; // TODO: Confirm a safe voltage limit.
 
     // Legacy gains were tuned for a NEO/Spark MAX controller, not this Kraken X60 velocity loop.

@@ -18,7 +18,8 @@ public class RampIOSim implements RampIO {
   private boolean closedLoop = false;
   private double appliedVolts = 0.0;
 
-  // TODO: Add gravity and mechanical travel limits after the ramp geometry and mass properties are defined.
+  // TODO: Add gravity and mechanical travel limits after the ramp geometry and mass properties are
+  // defined.
   public RampIOSim() {
     motorSim =
         new DCMotorSim(
@@ -39,9 +40,7 @@ public class RampIOSim implements RampIO {
 
     appliedVolts =
         MathUtil.clamp(
-            appliedVolts,
-            -RampConstants.Motor.MAX_VOLTAGE,
-            RampConstants.Motor.MAX_VOLTAGE);
+            appliedVolts, -RampConstants.Motor.MAX_VOLTAGE, RampConstants.Motor.MAX_VOLTAGE);
 
     motorSim.setInputVoltage(appliedVolts);
     motorSim.update(Constants.periodicLoopPeriod);
@@ -57,10 +56,7 @@ public class RampIOSim implements RampIO {
   public void setVoltage(double volts) {
     closedLoop = false;
     appliedVolts =
-        MathUtil.clamp(
-            volts,
-            -RampConstants.Motor.MAX_VOLTAGE,
-            RampConstants.Motor.MAX_VOLTAGE);
+        MathUtil.clamp(volts, -RampConstants.Motor.MAX_VOLTAGE, RampConstants.Motor.MAX_VOLTAGE);
   }
 
   @Override

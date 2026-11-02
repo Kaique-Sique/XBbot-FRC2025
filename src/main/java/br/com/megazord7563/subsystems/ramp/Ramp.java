@@ -72,8 +72,7 @@ public class Ramp extends SubsystemBase {
   @AutoLogOutput(key = "Ramp/AtGoal")
   public boolean atGoal() {
     return hasActiveGoal
-        && Math.abs(getPositionRad() - goalPositionRad)
-            <= RampConstants.POSITION_TOLERANCE_RAD;
+        && Math.abs(getPositionRad() - goalPositionRad) <= RampConstants.POSITION_TOLERANCE_RAD;
   }
 
   @AutoLogOutput(key = "Ramp/PositionRad")

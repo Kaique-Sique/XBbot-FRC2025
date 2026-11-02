@@ -25,11 +25,15 @@ public class OuttakeConstants {
     public static final boolean MOTOR_INVERTED = true;
     public static final DCMotor DC_MOTOR = DCMotor.getKrakenX60Foc(1);
 
-    public static final Current STATOR_CURRENT_LIMIT = Amps.of(80); // TODO: Validate on the Kraken X60.
-    public static final Current SUPPLY_CURRENT_LIMIT = Amps.of(30); // TODO: Validate for the power budget.
+    public static final Current STATOR_CURRENT_LIMIT =
+        Amps.of(80); // TODO: Validate on the Kraken X60.
+    public static final Current SUPPLY_CURRENT_LIMIT =
+        Amps.of(30); // TODO: Validate for the power budget.
 
-    public static final double MOTOR_INERTIA = 0.2; // TODO: Measure or calculate the mechanism-side moment of inertia.
-    public static final double MAX_VOLTAGE = 8.0; // TODO: Reconcile with the legacy +/-2.65 V limit and validate on hardware.
+    public static final double MOTOR_INERTIA =
+        0.2; // TODO: Measure or calculate the mechanism-side moment of inertia.
+    public static final double MAX_VOLTAGE =
+        8.0; // TODO: Reconcile with the legacy +/-2.65 V limit and validate on hardware.
 
     // The legacy Coral TalonFX used a position-oriented control path. The current Outtake uses
     // VelocityVoltage, so its old position-loop gains must not be copied into this velocity loop.
@@ -68,12 +72,16 @@ public class OuttakeConstants {
     public static final boolean MOTOR_INVERTED = false;
     public static final DCMotor DC_MOTOR = DCMotor.getKrakenX60Foc(1);
 
-    public static final Current STATOR_CURRENT_LIMIT = Amps.of(80); // TODO: Validate on the Kraken X60.
-    public static final Current SUPPLY_CURRENT_LIMIT = Amps.of(30); // TODO: Validate for the power budget.
+    public static final Current STATOR_CURRENT_LIMIT =
+        Amps.of(80); // TODO: Validate on the Kraken X60.
+    public static final Current SUPPLY_CURRENT_LIMIT =
+        Amps.of(30); // TODO: Validate for the power budget.
 
-    public static final double MOTOR_INERTIA = 0.4; // TODO: Measure or calculate the pivot-side moment of inertia.
+    public static final double MOTOR_INERTIA =
+        0.4; // TODO: Measure or calculate the pivot-side moment of inertia.
     public static final double MAX_VOLTAGE = 8.0; // TODO: Confirm a safe voltage limit.
-    public static final double POSITION_TOLERANCE_RAD = 0.2; // TODO: Tune against the pivot geometry.
+    public static final double POSITION_TOLERANCE_RAD =
+        0.2; // TODO: Tune against the pivot geometry.
 
     // Legacy gains were tuned for a NEO/Spark MAX MAXMotion controller and are not portable
     // to this Kraken X60/Phoenix 6 position loop.

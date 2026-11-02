@@ -85,7 +85,8 @@ public class AlgaeIntakeIOTalonFX implements AlgaeIntakeIO {
     rollerConfig.Slot0.kV = AlgaeIntakeConstants.RollerMotor.FeedForwardController.kV;
     rollerConfig.Slot0.kS = AlgaeIntakeConstants.RollerMotor.FeedForwardController.kS;
     rollerConfig.Slot0.kA = AlgaeIntakeConstants.RollerMotor.FeedForwardController.kA;
-    rollerConfig.Feedback.SensorToMechanismRatio = AlgaeIntakeConstants.RollerMotor.MOTOR_GEAR_RATIO;
+    rollerConfig.Feedback.SensorToMechanismRatio =
+        AlgaeIntakeConstants.RollerMotor.MOTOR_GEAR_RATIO;
     rollerConfig.CurrentLimits.StatorCurrentLimit =
         AlgaeIntakeConstants.RollerMotor.STATOR_CURRENT_LIMIT.in(Amps);
     rollerConfig.CurrentLimits.StatorCurrentLimitEnable = true;
@@ -126,7 +127,8 @@ public class AlgaeIntakeIOTalonFX implements AlgaeIntakeIO {
     var pivotStatus =
         BaseStatusSignal.refreshAll(pivotPosition, pivotVelocity, pivotAppliedVolts, pivotCurrent);
     var rollerStatus =
-        BaseStatusSignal.refreshAll(rollerPosition, rollerVelocity, rollerAppliedVolts, rollerCurrent);
+        BaseStatusSignal.refreshAll(
+            rollerPosition, rollerVelocity, rollerAppliedVolts, rollerCurrent);
 
     inputs.pivotMotorConnected = pivotConnectedDebounce.calculate(pivotStatus.isOK());
     inputs.pivotPositionRad = Units.rotationsToRadians(pivotPosition.getValueAsDouble());
@@ -143,8 +145,7 @@ public class AlgaeIntakeIOTalonFX implements AlgaeIntakeIO {
 
   @Override
   public void setPivotPosition(double positionRad) {
-    pivotMotor.setControl(
-        pivotPositionRequest.withPosition(Units.radiansToRotations(positionRad)));
+    pivotMotor.setControl(pivotPositionRequest.withPosition(Units.radiansToRotations(positionRad)));
   }
 
   @Override

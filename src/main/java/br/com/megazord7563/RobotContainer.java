@@ -2,16 +2,20 @@ package br.com.megazord7563;
 
 import br.com.megazord7563.commands.drive.DriveCommands;
 import br.com.megazord7563.generated.TunerConstants;
+import br.com.megazord7563.subsystems.algaeintake.AlgaeIntake;
+import br.com.megazord7563.subsystems.algaeintake.AlgaeIntakeIO;
+import br.com.megazord7563.subsystems.algaeintake.AlgaeIntakeIOSim;
+import br.com.megazord7563.subsystems.algaeintake.AlgaeIntakeIOTalonFX;
+import br.com.megazord7563.subsystems.climber.Climber;
+import br.com.megazord7563.subsystems.climber.ClimberIO;
+import br.com.megazord7563.subsystems.climber.ClimberIOSim;
+import br.com.megazord7563.subsystems.climber.ClimberIOTalonFX;
 import br.com.megazord7563.subsystems.drive.DriveSubsystem;
 import br.com.megazord7563.subsystems.drive.GyroIO;
 import br.com.megazord7563.subsystems.drive.GyroIOPigeon2;
 import br.com.megazord7563.subsystems.drive.ModuleIO;
 import br.com.megazord7563.subsystems.drive.ModuleIOSim;
 import br.com.megazord7563.subsystems.drive.ModuleIOTalonFX;
-import br.com.megazord7563.subsystems.algaeintake.AlgaeIntake;
-import br.com.megazord7563.subsystems.algaeintake.AlgaeIntakeIO;
-import br.com.megazord7563.subsystems.algaeintake.AlgaeIntakeIOSim;
-import br.com.megazord7563.subsystems.algaeintake.AlgaeIntakeIOTalonFX;
 import br.com.megazord7563.subsystems.outtake.Outtake;
 import br.com.megazord7563.subsystems.outtake.OuttakeIO;
 import br.com.megazord7563.subsystems.outtake.OuttakeIOSim;
@@ -43,6 +47,7 @@ public class RobotContainer {
   private final Outtake outtake;
   private final Ramp ramp;
   private final AlgaeIntake algaeIntake;
+  private final Climber climber;
 
   // Controller
   private final CommandXboxController controller = new CommandXboxController(0);
@@ -64,6 +69,7 @@ public class RobotContainer {
         outtake = new Outtake(new OuttakeIOTalonFX());
         ramp = new Ramp(new RampIOTalonFX());
         algaeIntake = new AlgaeIntake(new AlgaeIntakeIOTalonFX());
+        climber = new Climber(new ClimberIOTalonFX());
         break;
 
       case SIM:
@@ -78,6 +84,7 @@ public class RobotContainer {
         outtake = new Outtake(new OuttakeIOSim());
         ramp = new Ramp(new RampIOSim());
         algaeIntake = new AlgaeIntake(new AlgaeIntakeIOSim());
+        climber = new Climber(new ClimberIOSim());
         break;
 
       default:
@@ -92,6 +99,7 @@ public class RobotContainer {
         outtake = new Outtake(new OuttakeIO() {});
         ramp = new Ramp(new RampIO() {});
         algaeIntake = new AlgaeIntake(new AlgaeIntakeIO() {});
+        climber = new Climber(new ClimberIO() {});
         break;
     }
 
@@ -193,6 +201,11 @@ public class RobotContainer {
   /** Use this to pass the algae intake subsystem to the main {@link Robot} class. */
   public AlgaeIntake getAlgaeIntake() {
     return algaeIntake;
+  }
+
+  /** Use this to pass the climber subsystem to the main {@link Robot} class. */
+  public Climber getClimber() {
+    return climber;
   }
 
   /**
