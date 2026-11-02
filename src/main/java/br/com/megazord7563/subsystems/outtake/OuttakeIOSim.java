@@ -101,13 +101,13 @@ public class OuttakeIOSim implements OuttakeIO {
   @Override
   public void setOuttakeOpenLoop(double output) {
     outtakeClosedLoop = false;
-    outtakeAppliedVolts = output;
+    outtakeAppliedVolts =\n        MathUtil.clamp(\n            output,\n            -OuttakeConstants.OuttakeMotor.MAX_VOLTAGE,\n            OuttakeConstants.OuttakeMotor.MAX_VOLTAGE);
   }
 
   @Override
   public void setPivotOpenLoop(double output) {
     pivotClosedLoop = false;
-    pivotAppliedVolts = output;
+    pivotAppliedVolts =\n        MathUtil.clamp(\n            output,\n            -OuttakeConstants.PivotMotor.MAX_VOLTAGE,\n            OuttakeConstants.PivotMotor.MAX_VOLTAGE);
   }
 
   @Override
