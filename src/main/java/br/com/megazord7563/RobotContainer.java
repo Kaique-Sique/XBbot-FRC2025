@@ -1,10 +1,3 @@
-// Copyright (c) 2021-2026 Littleton Robotics
-// http://github.com/Mechanical-Advantage
-//
-// Use of this source code is governed by a BSD
-// license that can be found in the LICENSE file
-// at the root directory of this project.
-
 package br.com.megazord7563;
 
 import br.com.megazord7563.commands.drive.DriveCommands;
@@ -15,6 +8,10 @@ import br.com.megazord7563.subsystems.drive.GyroIOPigeon2;
 import br.com.megazord7563.subsystems.drive.ModuleIO;
 import br.com.megazord7563.subsystems.drive.ModuleIOSim;
 import br.com.megazord7563.subsystems.drive.ModuleIOTalonFX;
+import br.com.megazord7563.subsystems.outtake.Outtake;
+import br.com.megazord7563.subsystems.outtake.OuttakeIO;
+import br.com.megazord7563.subsystems.outtake.OuttakeIOSim;
+import br.com.megazord7563.subsystems.outtake.OuttakeIOTalonFX;
 import com.pathplanner.lib.auto.AutoBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -35,6 +32,7 @@ import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 public class RobotContainer {
   // Subsystems
   private final DriveSubsystem driveSubsystem;
+  private final Outtake outtake;
 
   // Controller
   private final CommandXboxController controller = new CommandXboxController(0);
@@ -53,6 +51,7 @@ public class RobotContainer {
                 new ModuleIOTalonFX(TunerConstants.FrontRight),
                 new ModuleIOTalonFX(TunerConstants.BackLeft),
                 new ModuleIOTalonFX(TunerConstants.BackRight));
+        outtake = new Outtake(new OuttakeIOTalonFX());
         break;
 
       case SIM:
@@ -64,6 +63,7 @@ public class RobotContainer {
                 new ModuleIOSim(TunerConstants.FrontRight),
                 new ModuleIOSim(TunerConstants.BackLeft),
                 new ModuleIOSim(TunerConstants.BackRight));
+        outtake = new Outtake(new OuttakeIOSim());
         break;
 
       default:
@@ -75,13 +75,14 @@ public class RobotContainer {
                 new ModuleIO() {},
                 new ModuleIO() {},
                 new ModuleIO() {});
+        outtake = new Outtake(new OuttakeIO() {});
         break;
     }
 
     // Set up auto routines
     autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
 
-    // Set up SysId routines
+    // Set up Drive SysId routines
     autoChooser.addOption(
         "Drive Wheel Radius Characterization",
         DriveCommands.wheelRadiusCharacterization(driveSubsystem));
@@ -100,6 +101,18 @@ public class RobotContainer {
     autoChooser.addOption(
         "Drive SysId (Dynamic Reverse)",
         driveSubsystem.sysIdDynamic(SysIdRoutine.Direction.kReverse));
+
+    // Set up Outtake SysId routines
+    autoChooser.addOption(
+        "Outtake SysId (Quasistatic Forward)",
+        outtake.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
+    autoChooser.addOption(
+        "Outtake SysId (Quasistatic Reverse)",
+        outtake.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
+    autoChooser.addOption(
+        "Outtake SysId (Dynamic Forward)", outtake.sysIdDynamic(SysIdRoutine.Direction.kForward));
+    autoChooser.addOption(
+        "Outtake SysId (Dynamic Reverse)", outtake.sysIdDynamic(SysIdRoutine.Direction.kReverse));
 
     // Configure the button bindings
     configureButtonBindings();
@@ -149,6 +162,11 @@ public class RobotContainer {
   /** Use this to pass the drive subsystem to the main {@link Robot} class. */
   public DriveSubsystem getDrive() {
     return driveSubsystem;
+  }
+
+  /** Use this to pass the outtake subsystem to the main {@link Robot} class. */
+  public Outtake getOuttake() {
+    return outtake;
   }
 
   /**

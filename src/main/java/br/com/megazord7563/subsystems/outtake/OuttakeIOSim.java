@@ -7,8 +7,8 @@ import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.wpilibj.simulation.DCMotorSim;
 
 /**
- * Physics sim implementation of module IO. The sim models are configured using a set of module
- * constants from Phoenix. Simulation is always based on voltage control.
+ * Physics sim implementation of Outtake IO. The sim models are configured using the motor and
+ * controller constants from OuttakeConstants. Simulation is voltage controlled.
  */
 public class OuttakeIOSim implements OuttakeIO {
   private final DCMotorSim outtakeSim;
@@ -17,13 +17,13 @@ public class OuttakeIOSim implements OuttakeIO {
   private boolean outtakeClosedLoop = false;
   private boolean pivotClosedLoop = false;
 
-  private PIDController outtakeController =
+  private final PIDController outtakeController =
       new PIDController(
           OuttakeConstants.OuttakeMotor.FeedBackController.SIM.kP,
           OuttakeConstants.OuttakeMotor.FeedBackController.SIM.kI,
           OuttakeConstants.OuttakeMotor.FeedBackController.SIM.kD);
 
-  private PIDController pivotController =
+  private final PIDController pivotController =
       new PIDController(
           OuttakeConstants.PivotMotor.FeedBackController.SIM.kP,
           OuttakeConstants.PivotMotor.FeedBackController.SIM.kI,
@@ -83,14 +83,14 @@ public class OuttakeIOSim implements OuttakeIO {
     outtakeSim.update(Constants.periodicLoopPeriod);
     pivotSim.update(Constants.periodicLoopPeriod);
 
-    // update outtake inputs
-    inputs.outakeMotorConnected = true;
-    inputs.outakeMotorPositionRad = outtakeSim.getAngularPositionRad();
-    inputs.outakeMotorVelocityRadPerSec = outtakeSim.getAngularVelocityRadPerSec();
-    inputs.outakeMotorAppliedVolts = outtakeAppliedVolts;
-    inputs.outakeMotorCurrentAmps = outtakeSim.getCurrentDrawAmps();
+    // Update outtake inputs
+    inputs.outtakeMotorConnected = true;
+    inputs.outtakeMotorPositionRad = outtakeSim.getAngularPositionRad();
+    inputs.outtakeMotorVelocityRadPerSec = outtakeSim.getAngularVelocityRadPerSec();
+    inputs.outtakeMotorAppliedVolts = outtakeAppliedVolts;
+    inputs.outtakeMotorCurrentAmps = outtakeSim.getCurrentDrawAmps();
 
-    // update pivot inputs
+    // Update pivot inputs
     inputs.pivotMotorConnected = true;
     inputs.pivotMotorPositionRad = pivotSim.getAngularPositionRad();
     inputs.pivotMotorVelocityRadPerSec = pivotSim.getAngularVelocityRadPerSec();
@@ -120,11 +120,17 @@ public class OuttakeIOSim implements OuttakeIO {
   }
 
   @Override
-  public void setPivotPosition(double positionRads) {
+  public void setPivotPosition(double positionRad) {
     pivotClosedLoop = true;
     pivotFFVolts =
-        OuttakeConstants.PivotMotor.FeedForwardController.SIM.kS * Math.signum(positionRads)
-            + OuttakeConstants.PivotMotor.FeedForwardController.SIM.kV * positionRads;
-    pivotController.setSetpoint(positionRads);
+        OuttakeConstants.PivotMotor.FeedForwardController.SIM.kS * Math.signum(positionRad)
+            + OuttakeConstants.PivotMotor.FeedForwardController.SIM.kV * positionRad;
+    pivotController.setSetpoint(positionRad);
+  }
+
+  @Override
+  public void stop() {
+    setOuttakeOpenLoop(0.0);
+    setPivotOpenLoop(0.0);
   }
 }

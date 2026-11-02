@@ -5,12 +5,12 @@ import org.littletonrobotics.junction.AutoLog;
 public interface OuttakeIO {
 
   @AutoLog
-  public class OuttakeIOInputs {
-    public boolean outakeMotorConnected = false;
-    public double outakeMotorPositionRad = 0.0;
-    public double outakeMotorVelocityRadPerSec = 0.0;
-    public double outakeMotorAppliedVolts = 0.0;
-    public double outakeMotorCurrentAmps = 0.0;
+  public static class OuttakeIOInputs {
+    public boolean outtakeMotorConnected = false;
+    public double outtakeMotorPositionRad = 0.0;
+    public double outtakeMotorVelocityRadPerSec = 0.0;
+    public double outtakeMotorAppliedVolts = 0.0;
+    public double outtakeMotorCurrentAmps = 0.0;
 
     public boolean pivotMotorConnected = false;
     public double pivotMotorPositionRad = 0.0;
@@ -33,4 +33,10 @@ public interface OuttakeIO {
 
   /** Run the pivot motor to the specified rotation. */
   public default void setPivotPosition(double positionRad) {}
+
+  /** Disables outputs to all motors. */
+  public default void stop() {
+    setOuttakeOpenLoop(0.0);
+    setPivotOpenLoop(0.0);
+  }
 }
