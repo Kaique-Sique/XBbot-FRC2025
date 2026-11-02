@@ -19,9 +19,6 @@ public interface ClimberIO {
   /** Moves the climber to the requested mechanism position in radians. */
   public default void setPosition(double positionRad) {}
 
-  /** Runs the climber at the requested angular velocity in radians per second. */
-  public default void setVelocity(double velocityRadPerSec) {}
-
   /** Runs the climber motor with the requested open-loop voltage. */
   public default void setVoltage(double volts) {}
 
