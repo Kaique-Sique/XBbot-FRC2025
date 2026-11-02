@@ -1,0 +1,81 @@
+package br.com.megazord7563.subsystems.outtake;
+
+import static edu.wpi.first.units.Units.*;
+
+import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.units.measure.Current;
+import edu.wpi.first.units.measure.Mass;
+
+public class OuttakeConstants {
+
+  public static final String OUTTAKE_MECHANISM_NAME = "Outtake";
+  public static final Mass OUTTAKE_MASS = Kilograms.of(3);
+
+  public static final class OuttakeMotor {
+    public static final double MOTOR_ID = 0;
+    public static final double MOTOR_GEAR_RATIO = 1 / 1;
+    public static final boolean MOTOR_INVERTED = false;
+    public static final DCMotor DC_MOTOR = DCMotor.getKrakenX60(1);
+
+    public static final Current STATOR_CURRENT_LIMIT = Amps.of(80);
+    public static final Current SUPPLY_CURRENT_LIMIT = Amps.of(30);
+
+    public static class FeedBackController {
+      public static final double kP = 0.0;
+      public static final double kI = 0.0;
+      public static final double kD = 0.0;
+
+      public static class SIM {
+        public static final double kP = 0.0;
+        public static final double kI = 0.0;
+        public static final double kD = 0.0;
+      }
+    }
+
+    public static class FeedForwardController {
+      public static final double kV = 0.0;
+      public static final double kS = 0.0;
+      public static final double kA = 0.0;
+
+      public static class SIM {
+        public static final double kV = 0.0;
+        public static final double kS = 0.0;
+        public static final double kA = 0.0;
+      }
+    }
+  }
+
+  public static final class PivotMotor {
+    public static final double MOTOR_ID = 0;
+    public static final double MOTOR_GEAR_RATIO = 1 / 1;
+    public static final boolean MOTOR_INVERTED = false;
+    public static final DCMotor DC_MOTOR = DCMotor.getKrakenX60(1);
+
+    public static final Current STATOR_CURRENT_LIMIT = Amps.of(80);
+    public static final Current SUPPLY_CURRENT_LIMIT = Amps.of(30);
+
+    public static class FeedBackController {
+      public static final double kP = 0.0;
+      public static final double kI = 0.0;
+      public static final double kD = 0.0;
+
+      public static class SIM {
+        public static final double kP = 0.0;
+        public static final double kI = 0.0;
+        public static final double kD = 0.0;
+      }
+    }
+
+    public static class FeedForwardController {
+      public static final double kV = 0.0;
+      public static final double kS = 0.0;
+      public static final double kA = 0.0;
+
+      public static class SIM {
+        public static final double kV = 0.0;
+        public static final double kS = 0.0;
+        public static final double kA = 0.0;
+      }
+    }
+  }
+}
