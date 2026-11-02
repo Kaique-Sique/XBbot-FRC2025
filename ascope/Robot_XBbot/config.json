@@ -1,52 +1,103 @@
 {
   "name": "XBbot",
   "isFTC": false,
-  "rotations": [],
-  "position": [
-    0,
-    0,
-    0
+  "disableSimplification": false,
+  "rotations": [
+    {
+      "axis": "x",
+      "degrees": 90
+    }
   ],
-  "cameras": [],
+  "position": [
+    -0.25,
+    -0.25,
+    0.08
+  ],
+  "cameras": [
+    {
+      "name": "Camera 1",
+      "rotations": [
+        {
+          "axis": "x",
+          "degrees": 90
+        }
+      ],
+      "position": [
+        0,
+        0,
+        0
+      ],
+      "resolution": [
+        640,
+        480
+      ],
+      "fov": 60
+    }
+  ],
   "components": [
     {
-      "zeroedRotations": [],
+      "zeroedRotations": [
+        {
+          "axis": "x",
+          "degrees": 90
+        }
+      ],
       "zeroedPosition": [
-        0,
-        0,
-        0
+        0.8,
+        0.8,
+        0.5
       ]
     },
     {
-      "zeroedRotations": [],
+      "zeroedRotations": [
+        {
+          "axis": "x",
+          "degrees": 90
+        }
+      ],
       "zeroedPosition": [
-        0,
-        0,
-        0
+        -0.8,
+        0.8,
+        0.5
       ]
     },
     {
-      "zeroedRotations": [],
+      "zeroedRotations": [
+        {
+          "axis": "x",
+          "degrees": 90
+        }
+      ],
       "zeroedPosition": [
-        0,
-        0,
-        0
+        0.8,
+        -0.8,
+        0.5
       ]
     },
     {
-      "zeroedRotations": [],
+      "zeroedRotations": [
+        {
+          "axis": "x",
+          "degrees": 90
+        }
+      ],
       "zeroedPosition": [
-        0,
-        0,
-        0
+        -0.8,
+        -0.8,
+        0.5
       ]
     },
     {
-      "zeroedRotations": [],
+      "zeroedRotations": [
+        {
+          "axis": "x",
+          "degrees": 90
+        }
+      ],
       "zeroedPosition": [
         0,
         0,
-        0
+        1.0
       ]
     }
   ]

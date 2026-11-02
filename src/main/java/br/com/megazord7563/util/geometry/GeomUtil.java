@@ -13,8 +13,7 @@ import edu.wpi.first.math.geometry.Twist3d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 
 /**
- * Geometry utilities for working with translations, rotations, transforms, and poses in 2D and
- * 3D.
+ * Geometry utilities for working with translations, rotations, transforms, and poses in 2D and 3D.
  */
 public class GeomUtil {
 
@@ -174,8 +173,8 @@ public class GeomUtil {
 
   /**
    * Transforms a velocity (ChassisSpeeds) from one point on the robot to another, given the offset
-   * between them and the robot's current rotation. Useful for calculating the velocity of a mechanism
-   * offset from the robot's center (e.g., a swerve module or a camera).
+   * between them and the robot's current rotation. Useful for calculating the velocity of a
+   * mechanism offset from the robot's center (e.g., a swerve module or a camera).
    *
    * @param velocity The original velocity (at the reference point)
    * @param transform The offset to the new position
