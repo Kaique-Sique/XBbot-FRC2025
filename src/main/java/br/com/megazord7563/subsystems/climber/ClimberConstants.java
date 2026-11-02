@@ -30,6 +30,8 @@ public class ClimberConstants {
     public static final double MAX_VOLTAGE = 12.0; // TODO: Validate the safe operating voltage.
     public static final double CLOSED_LOOP_RAMP_PERIOD = 0.25;
 
+    public static final double POSITION_TOLERANCE_RAD =
+        Math.toRadians(2.0); // TODO: Validate against the climber's mechanical requirements.
 
     public static class FeedBackController {
       public static final double kP = 0.0665;
@@ -37,33 +39,38 @@ public class ClimberConstants {
       public static final double kD = 0.0;
 
       public static class SIM {
-        public static final double kP = 0.0; // TODO: Tune the simulation controller.
-        public static final double kI = 0.0;
-        public static final double kD = 0.0;
+        // Convert the legacy TalonFX gains from volts per mechanism rotation to volts per radian.
+        public static final double kP = FeedBackController.kP / (2.0 * Math.PI);
+        public static final double kI = FeedBackController.kI / (2.0 * Math.PI);
+        public static final double kD = FeedBackController.kD / (2.0 * Math.PI);
       }
     }
 
     public static class FeedForwardController {
-      // Legacy velocity feedforward values.
+      // Legacy TalonFX feedforward values use mechanism rotations as the angular unit.
       public static final double kS = 0.1;
       public static final double kV = 0.12;
       public static final double kA = 0.0; // TODO: Characterize acceleration feedforward.
 
       public static class SIM {
-        public static final double kS = 0.0;
-        public static final double kV = 0.0;
-        public static final double kA = 0.0;
+        // Convert velocity and acceleration gains from per rotation to per radian.
+        public static final double kS = FeedForwardController.kS;
+        public static final double kV = FeedForwardController.kV / (2.0 * Math.PI);
+        public static final double kA = FeedForwardController.kA / (2.0 * Math.PI);
       }
     }
 
     public static class MotionMagic {
+      // Phoenix values are mechanism rotations per second and rotations per second squared.
       public static final double CRUISE_VELOCITY = 5.0;
       public static final double ACCELERATION = 10.0;
       public static final double JERK = 100.0;
     }
 
-    // TODO: Define safe climber travel limits and the homing/zeroing procedure.
-    // TODO: Validate legacy gains and current limits on the single-motor mechanism.
+    // TODO: Define safe mechanical travel limits and configure TalonFX software limits.
+    // TODO: Define and implement a homing/zeroing procedure after selecting the reference sensor.
+    // TODO: Confirm the CAN bus, gear ratio, motor inversion, inertia, current limits, voltage,
+    // and legacy gains on the physical single-motor climber before enabling it.
   }
 
   private ClimberConstants() {}
