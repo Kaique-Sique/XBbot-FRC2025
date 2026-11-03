@@ -9,6 +9,7 @@ package br.com.megazord7563;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import org.littletonrobotics.junction.AutoLogOutput;
 
 public class RobotState {
   private static Pose2d robotPose = Pose2d.kZero;
