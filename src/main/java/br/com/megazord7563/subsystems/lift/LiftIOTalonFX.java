@@ -12,6 +12,7 @@ import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.ParentDevice;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.MotorAlignmentValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.util.Units;
@@ -122,7 +123,11 @@ public class LiftIOTalonFX implements LiftIO {
   private void enforceFollowerMode() {
     if (hardwareConfigured) {
       followerMotor.setControl(
-          new Follower(LiftConstants.LEADER_MOTOR_ID, LiftConstants.FOLLOWER_OPPOSES_LEADER));
+          new Follower(
+              LiftConstants.LEADER_MOTOR_ID,
+              LiftConstants.FOLLOWER_OPPOSES_LEADER
+                  ? MotorAlignmentValue.Opposed
+                  : MotorAlignmentValue.Aligned));
     }
   }
 
