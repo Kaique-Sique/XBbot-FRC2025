@@ -33,9 +33,27 @@ public interface AlgaeIntakeIO {
   /** Runs the collection wheels with the specified open-loop voltage. */
   public default void setRollerVoltage(double volts) {}
 
-  /** Disables outputs to both motors. */
-  public default void stop() {
-    setPivotVoltage(0.0);
-    setRollerVoltage(0.0);
+  /** Sets the only collection wheel motor to coast mode. */
+  public default void setRollerCoast() {}
+
+  /** Sets the only pivot motor to coast mode. */
+  public default void setPivotCoast() {}
+
+  /** Sets the only collection wheel motor to brake mode. */
+  public default void setRollerBrake() {}
+
+  /** Sets the only pivot motor to brake mode. */
+  public default void setPivotBrake() {}
+
+  /** Disables outputs to all motors. */
+  public default void setCoast() {
+    setRollerCoast();
+    setPivotCoast();
+  }
+
+  /** Brake all motors. */
+  public default void setBrake() {
+    setRollerBrake(); 
+    setPivotBrake();
   }
 }
