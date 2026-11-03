@@ -45,15 +45,16 @@ def parse_version(value):
         return None
 
 
-def already_handled(branch):
-    """Avoid recreating a branch or PR that was already handled."""
+def pull_request_exists(branch):
+    """Return whether a PR was already created for this update branch."""
     prs = run(
         "gh", "pr", "list", "--head", branch, "--state", "all",
         "--json", "number", capture=True
     ).stdout
-    if json.loads(prs):
-        return True
+    return bool(json.loads(prs))
 
+
+def remote_branch_exists(branch):
     remote = run(
         "git", "ls-remote", "--heads", "origin", branch, capture=True
     ).stdout
@@ -90,32 +91,41 @@ def process(filename):
 
     old_version, new_version = local["version"], remote["version"]
     branch = f"update-{slug(name)}-{slug(new_version)}"
-    if already_handled(branch):
-        print(f"{name}: branch/PR {branch} already exists; skipped")
+    if pull_request_exists(branch):
+        print(f"{name}: PR for {branch} already exists; skipped")
         return
 
     # Keep upstream filenames inside vendordeps.
     new_filename = os.path.basename(remote.get("fileName") or filename)
     new_path = os.path.join(VENDORDEP_DIR, new_filename)
 
-    run("git", "checkout", BASE_BRANCH)
-    run("git", "checkout", "-b", branch)
+    if remote_branch_exists(branch):
+        # A previous run may have pushed the branch but failed before opening
+        # its PR. Reuse that branch instead of treating it as fully handled.
+        print(f"{name}: reusing existing branch {branch} to create its PR")
+        run("git", "fetch", "origin", branch)
+        run("git", "checkout", "-B", branch, f"origin/{branch}")
+    else:
+        run("git", "checkout", BASE_BRANCH)
+        run("git", "checkout", "-b", branch)
 
-    content = response.text
-    if not content.endswith("\n"):
-        content += "\n"
-    with open(new_path, "w", encoding="utf-8") as destination:
-        destination.write(content)
+        content = response.text
+        if not content.endswith("\\n"):
+            content += "\\n"
+        with open(new_path, "w", encoding="utf-8") as destination:
+            destination.write(content)
 
-    if new_path != file_path:
-        print(f"Renaming {filename} -> {new_filename}")
-        os.remove(file_path)
+        if new_path != file_path:
+            print(f"Renaming {filename} -> {new_filename}")
+            os.remove(file_path)
+
+        message = f"Bump {name} from {old_version} to {new_version}"
+        print(message)
+        run("git", "add", "-A", VENDORDEP_DIR)
+        run("git", "commit", "-m", message)
+        run("git", "push", "-u", "origin", branch)
 
     message = f"Bump {name} from {old_version} to {new_version}"
-    print(message)
-    run("git", "add", "-A", VENDORDEP_DIR)
-    run("git", "commit", "-m", message)
-    run("git", "push", "-u", "origin", branch)
     run(
         "gh", "pr", "create",
         "--title", message,
@@ -123,10 +133,10 @@ def process(filename):
         "--head", branch,
         "--body",
         (
-            f"### Automated update for {name}\n"
-            f"- **Old version:** {old_version}\n"
-            f"- **New version:** {new_version}\n"
-            f"- **Source:** {json_url}\n\n"
+            f"### Automated update for {name}\\n"
+            f"- **Old version:** {old_version}\\n"
+            f"- **New version:** {new_version}\\n"
+            f"- **Source:** {json_url}\\n\\n"
             "Run the build and test on a robot or in simulation before merging."
         ),
     )
