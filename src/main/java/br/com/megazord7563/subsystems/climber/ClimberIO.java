@@ -22,8 +22,9 @@ public interface ClimberIO {
   /** Runs the climber motor with the requested open-loop voltage. */
   public default void setVoltage(double volts) {}
 
-  /** Stops the climber motor. */
-  public default void stop() {
-    setVoltage(0.0);
-  }
+  /** sets coast to the climber motor. */
+  public default void setCoast() {}
+
+  /** sets brake to the climber motor. */
+  public default void setBrake() {}
 }

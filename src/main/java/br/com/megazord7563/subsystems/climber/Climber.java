@@ -53,8 +53,19 @@ public class Climber extends SubsystemBase {
 
   /** Stops the climber motor and clears the active position goal. */
   public void stop() {
+    setCoast();
+  }
+
+  /** Disengages the motor and allows it to spin freely. */
+  public void setCoast() {
     hasActiveGoal = false;
-    io.stop();
+    io.setCoast();
+  }
+
+  /** Engages the motor and holds it in place. */
+  public void setBrake() {
+    hasActiveGoal = false;
+    io.setBrake();
   }
 
   // ── Getters ─────────────────────────────────────────────────────────────────
