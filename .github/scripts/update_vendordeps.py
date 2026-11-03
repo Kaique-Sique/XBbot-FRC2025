@@ -110,8 +110,8 @@ def process(filename):
         run("git", "checkout", "-b", branch)
 
         content = response.text
-        if not content.endswith("\\n"):
-            content += "\\n"
+        if not content.endswith("\n"):
+            content += "\n"
         with open(new_path, "w", encoding="utf-8") as destination:
             destination.write(content)
 
@@ -133,10 +133,10 @@ def process(filename):
         "--head", branch,
         "--body",
         (
-            f"### Automated update for {name}\\n"
-            f"- **Old version:** {old_version}\\n"
-            f"- **New version:** {new_version}\\n"
-            f"- **Source:** {json_url}\\n\\n"
+            f"### Automated update for {name}\n"
+            f"- **Old version:** {old_version}\n"
+            f"- **New version:** {new_version}\n"
+            f"- **Source:** {json_url}\n\n"
             "Run the build and test on a robot or in simulation before merging."
         ),
     )
