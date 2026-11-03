@@ -1,3 +1,6 @@
+<!-- Copyright (c) 2026 Megazord 7563. All rights reserved. -->
+<!-- This file is part of the XBbot FRC robot code. See LICENSE for license terms. -->
+
 # CLAUDE.md — XBbot FRC 2025
 
 ## Missão e contexto

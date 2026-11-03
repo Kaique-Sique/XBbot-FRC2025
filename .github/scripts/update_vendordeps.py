@@ -9,6 +9,12 @@ Environment:
   BASE_BRANCH  PR target branch (default: main)
   FRC_YEAR     Only accept this FRC season (default: no season filter)
 """
+
+# Copyright (c) 2026 Megazord 7563
+# All rights reserved.
+#
+# This file is part of the XBbot FRC robot code.
+# See the LICENSE file in the project root for license terms.
 import json
 import os
 import re

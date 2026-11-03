@@ -1,3 +1,6 @@
+<!-- Copyright (c) 2026 Megazord 7563. All rights reserved. -->
+<!-- This file is part of the XBbot FRC robot code. See LICENSE for license terms. -->
+
 # Contributing to XBbot-FRC2025
 
 <a href="#-branching-strategy">Branching</a> ·
