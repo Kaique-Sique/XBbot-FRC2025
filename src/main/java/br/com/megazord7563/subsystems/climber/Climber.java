@@ -27,6 +27,7 @@ public class Climber extends SubsystemBase {
   /** Creates a new Climber subsystem. */
   public Climber(ClimberIO io) {
     this.io = io;
+    io.setVoltage(0.0);
     motorDisconnectedAlert = new Alert("Climber motor is disconnected.", AlertType.kError);
   }
 

@@ -27,6 +27,7 @@ public class Ramp extends SubsystemBase {
   /** Creates a new Ramp subsystem. */
   public Ramp(RampIO io) {
     this.io = io;
+    io.setVoltage(0.0);
     motorDisconnectedAlert = new Alert("Disconnected ramp motor.", AlertType.kError);
   }
 
