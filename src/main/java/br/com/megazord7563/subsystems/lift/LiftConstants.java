@@ -38,8 +38,6 @@ public final class LiftConstants {
       public static final double kD = 0.0;
     }
 
-    private SIM() {}
-    private FeedBackController() {}
   }
 
   // TODO: Characterize motion feedforward after the elevator geometry and mass are known.
@@ -56,8 +54,6 @@ public final class LiftConstants {
       public static final double kG = 0.0;
     }
 
-    private SIM() {}
-    private FeedForwardController() {}
   }
 
   // TODO: Replace with measured or calculated mechanism inertia.
