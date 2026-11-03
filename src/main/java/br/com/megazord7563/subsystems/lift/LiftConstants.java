@@ -24,7 +24,7 @@ public final class LiftConstants {
 
   // TODO: Define the actual motor-to-elevator reduction and elevator geometry.
   // This placeholder only allows the simulation model to be constructed; it is not a validated ratio.
-  public static final double MOTOR_GEAR_RATIO = 1.0;
+  public static final double MOTOR_GEAR_RATIO = 1.0; //considering the gear ratio and the pulley diameter for a result in metters
 
   // Both Kraken X60 motors contribute torque to the same elevator mechanism.
   public static final DCMotor DC_MOTOR = DCMotor.getKrakenX60Foc(2);
