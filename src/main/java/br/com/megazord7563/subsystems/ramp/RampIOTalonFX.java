@@ -6,6 +6,8 @@ import static edu.wpi.first.units.Units.*;
 import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.CoastOut;
+import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.ParentDevice;
@@ -24,6 +26,9 @@ public class RampIOTalonFX implements RampIO {
   private final TalonFX motor;
   private final VoltageOut voltageRequest = new VoltageOut(0.0);
   private final PositionVoltage positionRequest = new PositionVoltage(0.0);
+
+  private final NeutralOut brakeRequest = new NeutralOut();
+  private final CoastOut coastRequest = new CoastOut();
 
   private final StatusSignal<Angle> position;
   private final StatusSignal<AngularVelocity> velocity;
@@ -91,7 +96,12 @@ public class RampIOTalonFX implements RampIO {
   }
 
   @Override
-  public void stop() {
-    motor.setControl(voltageRequest.withOutput(0.0));
+  public void setCoast() {
+    motor.setControl(coastRequest);
+  }
+
+  @Override
+  public void setBrake() {
+    motor.setControl(brakeRequest);
   }
 }

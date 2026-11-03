@@ -21,8 +21,9 @@ public interface RampIO {
   /** Moves the ramp to the specified position in radians. */
   public default void setPosition(double positionRad) {}
 
-  /** Disables the motor output. */
-  public default void stop() {
-    setVoltage(0.0);
-  }
+  /** Sets the motor to coast mode. */
+  public default void setCoast() {}
+
+  /** Sets the motor to brake mode. */
+  public default void setBrake() {}
 }

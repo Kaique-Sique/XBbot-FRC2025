@@ -58,9 +58,21 @@ public class Ramp extends SubsystemBase {
 
   /** Disables the ramp motor output and clears the active position goal. */
   public void stop() {
-    hasActiveGoal = false;
-    io.stop();
+    io.setCoast();
   }
+
+  public void setCoast() 
+  {
+    hasActiveGoal = false;
+    io.setCoast();
+  }
+
+  public void setBrake() 
+  {
+    hasActiveGoal = false;
+    io.setBrake();
+  }
+
 
   // ── Getters ─────────────────────────────────────────────────────────────────
 
