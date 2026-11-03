@@ -11,6 +11,10 @@ import br.com.megazord7563.subsystems.climber.ClimberIO;
 import br.com.megazord7563.subsystems.climber.ClimberIOSim;
 import br.com.megazord7563.subsystems.climber.ClimberIOTalonFX;
 import br.com.megazord7563.subsystems.drive.DriveSubsystem;
+import br.com.megazord7563.subsystems.lift.Lift;
+import br.com.megazord7563.subsystems.lift.LiftIO;
+import br.com.megazord7563.subsystems.lift.LiftIOSim;
+import br.com.megazord7563.subsystems.lift.LiftIOTalonFX;
 import br.com.megazord7563.subsystems.drive.GyroIO;
 import br.com.megazord7563.subsystems.drive.GyroIOPigeon2;
 import br.com.megazord7563.subsystems.drive.ModuleIO;
@@ -48,6 +52,7 @@ public class RobotContainer {
   private final Ramp ramp;
   private final AlgaeIntake algaeIntake;
   private final Climber climber;
+  private final Lift lift;
 
   // Controller
   private final CommandXboxController controller = new CommandXboxController(0);
@@ -70,6 +75,7 @@ public class RobotContainer {
         ramp = new Ramp(new RampIOTalonFX());
         algaeIntake = new AlgaeIntake(new AlgaeIntakeIOTalonFX());
         climber = new Climber(new ClimberIOTalonFX());
+        lift = new Lift(new LiftIOTalonFX());
         break;
 
       case SIM:
@@ -85,6 +91,7 @@ public class RobotContainer {
         ramp = new Ramp(new RampIOSim());
         algaeIntake = new AlgaeIntake(new AlgaeIntakeIOSim());
         climber = new Climber(new ClimberIOSim());
+        lift = new Lift(new LiftIOSim());
         break;
 
       default:
@@ -100,6 +107,7 @@ public class RobotContainer {
         ramp = new Ramp(new RampIO() {});
         algaeIntake = new AlgaeIntake(new AlgaeIntakeIO() {});
         climber = new Climber(new ClimberIO() {});
+        lift = new Lift(new LiftIO() {});
         break;
     }
 
@@ -206,6 +214,11 @@ public class RobotContainer {
   /** Use this to pass the climber subsystem to the main {@link Robot} class. */
   public Climber getClimber() {
     return climber;
+  }
+
+  /** Use this to pass the lift subsystem to the main {@link Robot} class. */
+  public Lift getLift() {
+    return lift;
   }
 
   /**
