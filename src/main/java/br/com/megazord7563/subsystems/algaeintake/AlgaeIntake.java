@@ -29,6 +29,8 @@ public class AlgaeIntake extends SubsystemBase {
   /** Creates a new AlgaeIntake subsystem. */
   public AlgaeIntake(AlgaeIntakeIO io) {
     this.io = io;
+    io.setPivotVoltage(0.0);
+    io.setRollerVoltage(0.0);
     pivotDisconnectedAlert = new Alert("Disconnected algae intake pivot motor.", AlertType.kError);
     rollerDisconnectedAlert =
         new Alert("Disconnected algae intake roller motor.", AlertType.kError);

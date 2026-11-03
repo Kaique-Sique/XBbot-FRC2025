@@ -28,6 +28,7 @@ public class Lift extends SubsystemBase {
   /** Creates a new Lift subsystem. */
   public Lift(LiftIO io) {
     this.io = io;
+    io.setVoltage(0.0);
     leaderDisconnectedAlert =
         new Alert("Lift leader motor is disconnected or not configured.", AlertType.kError);
     followerDisconnectedAlert =

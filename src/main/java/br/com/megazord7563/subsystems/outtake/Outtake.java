@@ -40,6 +40,8 @@ public class Outtake extends SubsystemBase {
   /** Creates a new Outtake subsystem. */
   public Outtake(OuttakeIO io) {
     this.io = io;
+    io.setOuttakeOpenLoop(0.0);
+    io.setPivotOpenLoop(0.0);
 
     outtakeDisconnectedAlert = new Alert("Disconnected outtake motor.", AlertType.kError);
     pivotDisconnectedAlert = new Alert("Disconnected pivot motor on outtake.", AlertType.kError);
