@@ -21,18 +21,22 @@ public class RobotState {
 
   // ── Getters ─────────────────────────────────────────────────────────────────
 
+  @AutoLogOutput(key = "RobotState/Rotation2d")
   public Rotation2d getRobotRotation() {
     return robotPose.getRotation();
   }
 
+  @AutoLogOutput(key = "RobotState/Pose2d")
   public Pose2d getRobotPose() {
     return robotPose;
   }
 
+  @AutoLogOutput(key = "RobotState/ChassisSpeeds")
   public ChassisSpeeds getRobotVelocity() {
     return robotVelocity;
   }
 
+  @AutoLogOutput(key = "RobotState/FieldVelocity")
   public ChassisSpeeds getFieldVelocity() {
     return ChassisSpeeds.fromRobotRelativeSpeeds(robotVelocity, getRobotRotation());
   }
