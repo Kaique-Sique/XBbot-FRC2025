@@ -104,6 +104,8 @@ public class DriveSubsystem extends SubsystemBase {
   private SwerveDrivePoseEstimator poseEstimator =
       new SwerveDrivePoseEstimator(kinematics, rawGyroRotation, lastModulePositions, Pose2d.kZero);
 
+  private RobotState robotState = RobotState.getInstance();
+
   public DriveSubsystem(
       GyroIO gyroIO,
       ModuleIO flModuleIO,
@@ -208,6 +210,9 @@ public class DriveSubsystem extends SubsystemBase {
 
       // Apply update
       poseEstimator.updateWithTime(sampleTimestamps[i], rawGyroRotation, modulePositions);
+
+      robotState.setRobotPose(poseEstimator.getEstimatedPosition());
+      robotState.setRobotVelocity(getChassisSpeeds());
     }
 
     // Update gyro alert
