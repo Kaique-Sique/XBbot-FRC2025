@@ -1,3 +1,9 @@
+// Copyright (c) 2026 Megazord 7563
+// All rights reserved.
+//
+// This file is part of the XBbot FRC robot code.
+// See the LICENSE file in the project root for license terms.
+
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.

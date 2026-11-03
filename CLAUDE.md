@@ -1,3 +1,6 @@
+<!-- Copyright (c) 2026 Megazord 7563. All rights reserved. -->
+<!-- This file is part of the XBbot FRC robot code. See LICENSE for license terms. -->
+
 # CLAUDE.md — XBbot FRC 2025
 
 ## Missão e contexto
@@ -26,7 +29,7 @@ Nunca invente:
 
 1. **Rampa de coral:** mecanismo articulado por um motor Kraken X60 dedicado, controlado por um TalonFX. A articulação é motorizada, mas a rampa conduz o coral passivamente para dentro do Outtake, sem transportá-lo ativamente. O subsistema Ramp deve permanecer independente do Outtake até que a integração seja especificada.
 2. **Manipulador de coral:** mecanismo articulado com rodas motorizadas.
-3. **Elevador:** sistema de elevação.
+3. **Elevador (Lift):** sistema de elevação acionado por dois motores Kraken X60 controlados por TalonFX, mecanicamente alinhados em sentidos opostos. Um motor é o líder e recebe todos os comandos; o segundo permanece exclusivamente em modo follower Phoenix 6, seguindo o líder com direção oposta. IDs CAN, redução, geometria, limites, carga e parâmetros de controle ainda precisam ser confirmados.
 4. **Intake de algae:** mecanismo articulado com rodas motorizadas.
 5. **Climber:** mecanismo de escalada acionado por um Kraken X60 com TalonFX. A implementação atual utiliza um único motor; o ID CAN legado é 19, mas o barramento, a redução e os limites mecânicos ainda precisam ser confirmados.
 
@@ -63,4 +66,4 @@ O código da equipe 2910 é uma referência para estudar organização e decisõ
 
 ## Estado inicial
 
-Os subsistemas Drive, Outtake, Ramp, AlgaeIntake e Climber possuem implementação inicial. O Ramp possui articulação motorizada por TalonFX e condução passiva do coral. O AlgaeIntake possui articulação por TalonFX e rodas de coleta motorizadas por um segundo TalonFX. O Climber possui controle de posição por Motion Magic e controle aberto por tensão; parâmetros mecânicos e de segurança ainda precisam ser confirmados.
+Os subsistemas Drive, Outtake, Ramp, AlgaeIntake, Climber e Lift possuem implementação inicial. O Lift utiliza dois Kraken X60/TalonFX, com setters somente para o líder e o segundo motor permanentemente configurado como follower. O Ramp possui articulação motorizada por TalonFX e condução passiva do coral. O AlgaeIntake possui articulação por TalonFX e rodas de coleta motorizadas por um segundo TalonFX. O Climber possui controle de posição por Motion Magic e controle aberto por tensão; parâmetros mecânicos e de segurança ainda precisam ser confirmados.

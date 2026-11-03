@@ -1,3 +1,9 @@
+// Copyright (c) 2026 Megazord 7563
+// All rights reserved.
+//
+// This file is part of the XBbot FRC robot code.
+// See the LICENSE file in the project root for license terms.
+
 package br.com.megazord7563.subsystems.algaeintake;
 
 import br.com.megazord7563.Constants;
@@ -129,8 +135,40 @@ public class AlgaeIntakeIOSim implements AlgaeIntakeIO {
   }
 
   @Override
-  public void stop() {
-    setPivotVoltage(0.0);
-    setRollerVoltage(0.0);
+  public void setCoast()  {
+    setPivotCoast();
+    setRollerCoast();
+  }
+
+  @Override 
+  public void setPivotCoast() {
+    pivotClosedLoop = false;
+    pivotAppliedVolts = 0.0;
+  }
+
+  @Override 
+  public void setRollerCoast() {
+    rollerClosedLoop = false;
+    rollerAppliedVolts = 0.0;
+  }
+
+  @Override
+  public void setBrake()  {
+    setPivotBrake();
+    setRollerBrake();
+  }
+
+  @Override
+  public void setPivotBrake()  {
+    // In simulation, braking is the same as coasting.
+    pivotClosedLoop = false;
+    pivotAppliedVolts = 0.0;
+  }
+
+  @Override
+  public void setRollerBrake()  {
+    // In simulation, braking is the same as coasting.
+    rollerClosedLoop = false;
+    rollerAppliedVolts = 0.0;
   }
 }

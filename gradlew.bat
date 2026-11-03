@@ -1,3 +1,6 @@
+@REM Copyright (c) 2026 Megazord 7563
+@REM All rights reserved.
+@REM This file is part of the XBbot FRC robot code.
 @rem
 @rem Copyright 2015 the original author or authors.
 @rem

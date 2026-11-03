@@ -1,3 +1,9 @@
+// Copyright (c) 2026 Megazord 7563
+// All rights reserved.
+//
+// This file is part of the XBbot FRC robot code.
+// See the LICENSE file in the project root for license terms.
+
 // Copyright (c) 2021-2026 Littleton Robotics
 // http://github.com/Mechanical-Advantage
 //

@@ -1,3 +1,9 @@
+// Copyright (c) 2026 Megazord 7563
+// All rights reserved.
+//
+// This file is part of the XBbot FRC robot code.
+// See the LICENSE file in the project root for license terms.
+
 package br.com.megazord7563.subsystems.algaeintake;
 
 import br.com.megazord7563.Constants;
@@ -73,8 +79,19 @@ public class AlgaeIntake extends SubsystemBase {
 
   /** Disables outputs to both motors and clears the active pivot goal. */
   public void stop() {
+    setCoast();
+  }
+
+  /** Disables all outputs to motors. */
+  public void setCoast() {
     hasActivePivotGoal = false;
-    io.stop();
+    io.setCoast();
+  }
+
+  /** Sets all outputs to motors to brake mode. */
+  public void setBrake() {
+    hasActivePivotGoal = false;
+    io.setBrake();
   }
 
   // ── Getters ─────────────────────────────────────────────────────────────────
