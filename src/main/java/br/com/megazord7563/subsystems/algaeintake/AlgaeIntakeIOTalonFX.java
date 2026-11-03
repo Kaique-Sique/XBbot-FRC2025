@@ -6,6 +6,8 @@ import static edu.wpi.first.units.Units.*;
 import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.CoastOut;
+import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
@@ -29,6 +31,9 @@ public class AlgaeIntakeIOTalonFX implements AlgaeIntakeIO {
   private final VoltageOut pivotVoltageRequest = new VoltageOut(0.0);
   private final VelocityVoltage rollerVelocityRequest = new VelocityVoltage(0.0);
   private final VoltageOut rollerVoltageRequest = new VoltageOut(0.0);
+
+  private final NeutralOut brakeRequest = new NeutralOut();
+  private final CoastOut coastRequest = new CoastOut();
 
   private final StatusSignal<Angle> pivotPosition;
   private final StatusSignal<AngularVelocity> pivotVelocity;
@@ -173,8 +178,34 @@ public class AlgaeIntakeIOTalonFX implements AlgaeIntakeIO {
   }
 
   @Override
-  public void stop() {
-    pivotMotor.setControl(pivotVoltageRequest.withOutput(0.0));
-    rollerMotor.setControl(rollerVoltageRequest.withOutput(0.0));
+  public void setCoast() {
+    setPivotCoast();
+    setPivotCoast();
+  }
+
+  @Override 
+  public void setPivotCoast() {
+    pivotMotor.setControl(coastRequest);
+  }
+
+  @Override 
+  public void setRollerCoast() {
+    rollerMotor.setControl(coastRequest);
+  }
+
+  @Override
+  public void setBrake() {
+    setPivotBrake();
+    setRollerBrake();
+  }
+
+  @Override
+  public void setPivotBrake()  {
+    pivotMotor.setControl(brakeRequest);
+  }
+
+  @Override
+  public void setRollerBrake()  {
+    rollerMotor.setControl(brakeRequest);
   }
 }

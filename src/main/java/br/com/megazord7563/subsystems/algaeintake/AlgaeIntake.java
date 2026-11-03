@@ -73,8 +73,19 @@ public class AlgaeIntake extends SubsystemBase {
 
   /** Disables outputs to both motors and clears the active pivot goal. */
   public void stop() {
+    setCoast();
+  }
+
+  /** Disables all outputs to motors. */
+  public void setCoast() {
     hasActivePivotGoal = false;
-    io.stop();
+    io.setCoast();
+  }
+
+  /** Sets all outputs to motors to brake mode. */
+  public void setBrake() {
+    hasActivePivotGoal = false;
+    io.setBrake();
   }
 
   // ── Getters ─────────────────────────────────────────────────────────────────
