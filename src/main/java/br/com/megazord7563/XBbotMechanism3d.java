@@ -7,7 +7,9 @@
 package br.com.megazord7563;
 
 import br.com.megazord7563.util.geometry.GeomUtil;
+import edu.wpi.first.math.geometry.Pose3d;
 import lombok.experimental.ExtensionMethod;
+import org.littletonrobotics.junction.Logger;
 
 @ExtensionMethod({GeomUtil.class})
 public class XBbotMechanism3d {
@@ -20,5 +22,12 @@ public class XBbotMechanism3d {
     return instance;
   }
 
-  public void log() {}
+  public void log() {
+    var model = new Pose3d();
+    var model_0 = new Pose3d();
+    var model_1 = new Pose3d();
+    var model_2 = new Pose3d();
+
+    Logger.recordOutput("/Mechanism3d/Components", model, model_0, model_1, model_2);
+  }
 }

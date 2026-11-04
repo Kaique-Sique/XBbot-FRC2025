@@ -8,14 +8,6 @@ package br.com.megazord7563;
 
 import br.com.megazord7563.commands.drive.DriveCommands;
 import br.com.megazord7563.generated.TunerConstants;
-import br.com.megazord7563.subsystems.algaeintake.AlgaeIntake;
-import br.com.megazord7563.subsystems.algaeintake.AlgaeIntakeIO;
-import br.com.megazord7563.subsystems.algaeintake.AlgaeIntakeIOSim;
-import br.com.megazord7563.subsystems.algaeintake.AlgaeIntakeIOTalonFX;
-import br.com.megazord7563.subsystems.climber.Climber;
-import br.com.megazord7563.subsystems.climber.ClimberIO;
-import br.com.megazord7563.subsystems.climber.ClimberIOSim;
-import br.com.megazord7563.subsystems.climber.ClimberIOTalonFX;
 import br.com.megazord7563.subsystems.drive.DriveSubsystem;
 import br.com.megazord7563.subsystems.drive.GyroIO;
 import br.com.megazord7563.subsystems.drive.GyroIOPigeon2;
@@ -26,14 +18,6 @@ import br.com.megazord7563.subsystems.lift.Lift;
 import br.com.megazord7563.subsystems.lift.LiftIO;
 import br.com.megazord7563.subsystems.lift.LiftIOSim;
 import br.com.megazord7563.subsystems.lift.LiftIOTalonFX;
-import br.com.megazord7563.subsystems.outtake.Outtake;
-import br.com.megazord7563.subsystems.outtake.OuttakeIO;
-import br.com.megazord7563.subsystems.outtake.OuttakeIOSim;
-import br.com.megazord7563.subsystems.outtake.OuttakeIOTalonFX;
-import br.com.megazord7563.subsystems.ramp.Ramp;
-import br.com.megazord7563.subsystems.ramp.RampIO;
-import br.com.megazord7563.subsystems.ramp.RampIOSim;
-import br.com.megazord7563.subsystems.ramp.RampIOTalonFX;
 import com.pathplanner.lib.auto.AutoBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -54,10 +38,6 @@ import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 public class RobotContainer {
   // Subsystems
   private final DriveSubsystem driveSubsystem;
-  private final Outtake outtake;
-  private final Ramp ramp;
-  private final AlgaeIntake algaeIntake;
-  private final Climber climber;
   private final Lift lift;
 
   // Controller
@@ -77,10 +57,6 @@ public class RobotContainer {
                 new ModuleIOTalonFX(TunerConstants.FrontRight),
                 new ModuleIOTalonFX(TunerConstants.BackLeft),
                 new ModuleIOTalonFX(TunerConstants.BackRight));
-        outtake = new Outtake(new OuttakeIOTalonFX());
-        ramp = new Ramp(new RampIOTalonFX());
-        algaeIntake = new AlgaeIntake(new AlgaeIntakeIOTalonFX());
-        climber = new Climber(new ClimberIOTalonFX());
         lift = new Lift(new LiftIOTalonFX());
         break;
 
@@ -93,10 +69,6 @@ public class RobotContainer {
                 new ModuleIOSim(TunerConstants.FrontRight),
                 new ModuleIOSim(TunerConstants.BackLeft),
                 new ModuleIOSim(TunerConstants.BackRight));
-        outtake = new Outtake(new OuttakeIOSim());
-        ramp = new Ramp(new RampIOSim());
-        algaeIntake = new AlgaeIntake(new AlgaeIntakeIOSim());
-        climber = new Climber(new ClimberIOSim());
         lift = new Lift(new LiftIOSim());
         break;
 
@@ -109,10 +81,6 @@ public class RobotContainer {
                 new ModuleIO() {},
                 new ModuleIO() {},
                 new ModuleIO() {});
-        outtake = new Outtake(new OuttakeIO() {});
-        ramp = new Ramp(new RampIO() {});
-        algaeIntake = new AlgaeIntake(new AlgaeIntakeIO() {});
-        climber = new Climber(new ClimberIO() {});
         lift = new Lift(new LiftIO() {});
         break;
     }
@@ -141,17 +109,6 @@ public class RobotContainer {
         driveSubsystem.sysIdDynamic(SysIdRoutine.Direction.kReverse));
 
     // Set up Outtake SysId routines
-    autoChooser.addOption(
-        "Outtake SysId (Quasistatic Forward)",
-        outtake.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
-    autoChooser.addOption(
-        "Outtake SysId (Quasistatic Reverse)",
-        outtake.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
-    autoChooser.addOption(
-        "Outtake SysId (Dynamic Forward)", outtake.sysIdDynamic(SysIdRoutine.Direction.kForward));
-    autoChooser.addOption(
-        "Outtake SysId (Dynamic Reverse)", outtake.sysIdDynamic(SysIdRoutine.Direction.kReverse));
-
     // Configure the button bindings
     configureButtonBindings();
   }
@@ -200,26 +157,6 @@ public class RobotContainer {
   /** Use this to pass the drive subsystem to the main {@link Robot} class. */
   public DriveSubsystem getDrive() {
     return driveSubsystem;
-  }
-
-  /** Use this to pass the outtake subsystem to the main {@link Robot} class. */
-  public Outtake getOuttake() {
-    return outtake;
-  }
-
-  /** Use this to pass the ramp subsystem to the main {@link Robot} class. */
-  public Ramp getRamp() {
-    return ramp;
-  }
-
-  /** Use this to pass the algae intake subsystem to the main {@link Robot} class. */
-  public AlgaeIntake getAlgaeIntake() {
-    return algaeIntake;
-  }
-
-  /** Use this to pass the climber subsystem to the main {@link Robot} class. */
-  public Climber getClimber() {
-    return climber;
   }
 
   /** Use this to pass the lift subsystem to the main {@link Robot} class. */
