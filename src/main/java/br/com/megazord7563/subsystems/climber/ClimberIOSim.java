@@ -90,15 +90,13 @@ public class ClimberIOSim implements ClimberIO {
   }
 
   @Override
-  public void setCoast() 
-  {
+  public void setCoast() {
     closedLoop = false;
     appliedVolts = 0.0;
   }
 
-  @Override 
-  public void setBrake()
-  {
+  @Override
+  public void setBrake() {
     // Same as coast on simulation mode
     closedLoop = false;
     appliedVolts = 0.0;

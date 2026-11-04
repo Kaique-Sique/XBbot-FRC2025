@@ -154,8 +154,7 @@ public class LiftIOTalonFX implements LiftIO {
 
     inputs.leaderMotorConnected = leaderConnectedDebounce.calculate(leaderStatus.isOK());
     inputs.leaderPositionRad = Units.rotationsToRadians(leaderPosition.getValueAsDouble());
-    inputs.leaderVelocityRadPerSec =
-        Units.rotationsToRadians(leaderVelocity.getValueAsDouble());
+    inputs.leaderVelocityRadPerSec = Units.rotationsToRadians(leaderVelocity.getValueAsDouble());
     inputs.leaderAppliedVolts = leaderAppliedVolts.getValueAsDouble();
     inputs.leaderCurrentAmps = leaderCurrent.getValueAsDouble();
 

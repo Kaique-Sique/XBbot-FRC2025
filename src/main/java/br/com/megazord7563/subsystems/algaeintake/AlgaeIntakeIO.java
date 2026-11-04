@@ -59,7 +59,7 @@ public interface AlgaeIntakeIO {
 
   /** Brake all motors. */
   public default void setBrake() {
-    setRollerBrake(); 
+    setRollerBrake();
     setPivotBrake();
   }
 }

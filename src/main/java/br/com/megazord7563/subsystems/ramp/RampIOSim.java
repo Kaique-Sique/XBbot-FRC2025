@@ -79,7 +79,7 @@ public class RampIOSim implements RampIO {
 
   @Override
   public void setBrake() {
-    //Same as coast in simulation mode
+    // Same as coast in simulation mode
     closedLoop = false;
     appliedVolts = 0.0;
   }

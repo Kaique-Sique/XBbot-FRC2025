@@ -189,12 +189,12 @@ public class AlgaeIntakeIOTalonFX implements AlgaeIntakeIO {
     setPivotCoast();
   }
 
-  @Override 
+  @Override
   public void setPivotCoast() {
     pivotMotor.setControl(coastRequest);
   }
 
-  @Override 
+  @Override
   public void setRollerCoast() {
     rollerMotor.setControl(coastRequest);
   }
@@ -206,12 +206,12 @@ public class AlgaeIntakeIOTalonFX implements AlgaeIntakeIO {
   }
 
   @Override
-  public void setPivotBrake()  {
+  public void setPivotBrake() {
     pivotMotor.setControl(brakeRequest);
   }
 
   @Override
-  public void setRollerBrake()  {
+  public void setRollerBrake() {
     rollerMotor.setControl(brakeRequest);
   }
 }

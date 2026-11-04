@@ -44,8 +44,7 @@ public class Lift extends SubsystemBase {
       stop();
     }
 
-    leaderDisconnectedAlert.set(
-        !inputs.leaderMotorConnected && Constants.currentMode != Mode.SIM);
+    leaderDisconnectedAlert.set(!inputs.leaderMotorConnected && Constants.currentMode != Mode.SIM);
     followerDisconnectedAlert.set(
         !inputs.followerMotorConnected && Constants.currentMode != Mode.SIM);
   }

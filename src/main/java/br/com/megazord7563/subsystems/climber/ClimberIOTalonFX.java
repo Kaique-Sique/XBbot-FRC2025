@@ -113,14 +113,12 @@ public class ClimberIOTalonFX implements ClimberIO {
   }
 
   @Override
-  public void setCoast()
-  {
+  public void setCoast() {
     motor.setControl(coastRequest);
   }
 
   @Override
-  public void setBrake()
-  {
+  public void setBrake() {
     motor.setControl(brakeRequest);
   }
 }

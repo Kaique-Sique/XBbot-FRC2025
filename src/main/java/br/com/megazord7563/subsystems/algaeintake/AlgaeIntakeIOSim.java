@@ -135,38 +135,38 @@ public class AlgaeIntakeIOSim implements AlgaeIntakeIO {
   }
 
   @Override
-  public void setCoast()  {
+  public void setCoast() {
     setPivotCoast();
     setRollerCoast();
   }
 
-  @Override 
+  @Override
   public void setPivotCoast() {
     pivotClosedLoop = false;
     pivotAppliedVolts = 0.0;
   }
 
-  @Override 
+  @Override
   public void setRollerCoast() {
     rollerClosedLoop = false;
     rollerAppliedVolts = 0.0;
   }
 
   @Override
-  public void setBrake()  {
+  public void setBrake() {
     setPivotBrake();
     setRollerBrake();
   }
 
   @Override
-  public void setPivotBrake()  {
+  public void setPivotBrake() {
     // In simulation, braking is the same as coasting.
     pivotClosedLoop = false;
     pivotAppliedVolts = 0.0;
   }
 
   @Override
-  public void setRollerBrake()  {
+  public void setRollerBrake() {
     // In simulation, braking is the same as coasting.
     rollerClosedLoop = false;
     rollerAppliedVolts = 0.0;

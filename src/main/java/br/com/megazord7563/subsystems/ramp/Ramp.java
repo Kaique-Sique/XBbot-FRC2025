@@ -68,18 +68,15 @@ public class Ramp extends SubsystemBase {
     io.setCoast();
   }
 
-  public void setCoast() 
-  {
+  public void setCoast() {
     hasActiveGoal = false;
     io.setCoast();
   }
 
-  public void setBrake() 
-  {
+  public void setBrake() {
     hasActiveGoal = false;
     io.setBrake();
   }
-
 
   // ── Getters ─────────────────────────────────────────────────────────────────
 

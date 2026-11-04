@@ -147,38 +147,38 @@ public class OuttakeIOSim implements OuttakeIO {
   }
 
   @Override
-  public void setCoast()  {
+  public void setCoast() {
     setPivotCoast();
     setOuttakeCoast();
   }
 
-  @Override 
+  @Override
   public void setPivotCoast() {
     pivotClosedLoop = false;
     pivotAppliedVolts = 0.0;
   }
 
-  @Override 
+  @Override
   public void setOuttakeCoast() {
     outtakeClosedLoop = false;
     outtakeAppliedVolts = 0.0;
   }
 
   @Override
-  public void setBrake()  {
+  public void setBrake() {
     setPivotBrake();
     setOuttakeBrake();
   }
 
   @Override
-  public void setPivotBrake()  {
+  public void setPivotBrake() {
     // In simulation, braking is the same as coasting.
     pivotClosedLoop = false;
     pivotAppliedVolts = 0.0;
   }
 
   @Override
-  public void setOuttakeBrake()  {
+  public void setOuttakeBrake() {
     // In simulation, braking is the same as coasting.
     outtakeClosedLoop = false;
     outtakeAppliedVolts = 0.0;

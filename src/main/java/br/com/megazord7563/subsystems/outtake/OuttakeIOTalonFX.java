@@ -201,12 +201,12 @@ public class OuttakeIOTalonFX implements OuttakeIO {
     setPivotCoast();
   }
 
-  @Override 
+  @Override
   public void setOuttakeCoast() {
     outtakeTalon.setControl(coastRequest);
   }
 
-  @Override 
+  @Override
   public void setPivotCoast() {
     pivotTalon.setControl(coastRequest);
   }
@@ -217,15 +217,13 @@ public class OuttakeIOTalonFX implements OuttakeIO {
     setPivotBrake();
   }
 
-  @Override 
-  public void setOuttakeBrake()
-  {
+  @Override
+  public void setOuttakeBrake() {
     outtakeTalon.setControl(brakeRequest);
   }
 
-  @Override 
-  public void setPivotBrake()
-  {
+  @Override
+  public void setPivotBrake() {
     pivotTalon.setControl(brakeRequest);
   }
 }

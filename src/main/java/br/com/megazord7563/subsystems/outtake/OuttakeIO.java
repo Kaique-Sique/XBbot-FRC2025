@@ -45,7 +45,7 @@ public interface OuttakeIO {
 
   /** Sets the only pivot motor to coast mode. */
   public default void setPivotCoast() {}
-  
+
   /** Sets the only outtake motor to brake mode. */
   public default void setOuttakeBrake() {}
 
@@ -60,7 +60,7 @@ public interface OuttakeIO {
 
   /** Brake all motors. */
   public default void setBrake() {
-    setOuttakeBrake(); 
+    setOuttakeBrake();
     setPivotBrake();
   }
 }

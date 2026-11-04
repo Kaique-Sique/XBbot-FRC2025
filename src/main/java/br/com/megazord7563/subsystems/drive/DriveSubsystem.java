@@ -16,8 +16,8 @@ package br.com.megazord7563.subsystems.drive;
 import static edu.wpi.first.units.Units.*;
 
 import br.com.megazord7563.Constants;
-import br.com.megazord7563.RobotState;
 import br.com.megazord7563.Constants.Mode;
+import br.com.megazord7563.RobotState;
 import br.com.megazord7563.generated.TunerConstants;
 import br.com.megazord7563.util.LocalADStarAK;
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -211,7 +211,6 @@ public class DriveSubsystem extends SubsystemBase {
 
       // Apply update
       poseEstimator.updateWithTime(sampleTimestamps[i], rawGyroRotation, modulePositions);
-
     }
 
     updateRobotState();
