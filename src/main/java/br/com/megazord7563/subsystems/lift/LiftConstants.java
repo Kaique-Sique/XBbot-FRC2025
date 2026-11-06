@@ -25,8 +25,9 @@ public final class LiftConstants {
   // TODO: Define the actual motor-to-elevator reduction and elevator geometry.
   // This placeholder only allows the simulation model to be constructed; it is not a validated
   // ratio.
-  public static final double MOTOR_GEAR_RATIO =
-      1.0; // considering the gear ratio and the pulley diameter for a result in metters
+  public static final double MOTOR_GEAR_RATIO = 4.5; // considering the gear ratio
+
+  public static final double PULLEY_RADIUS_METERS = 0.05; // considering the pulley radius
 
   // Both Kraken X60 motors contribute torque to the same elevator mechanism.
   public static final DCMotor DC_MOTOR = DCMotor.getKrakenX60Foc(2);
@@ -36,12 +37,12 @@ public final class LiftConstants {
 
   // TODO: Characterize the Lift controller gains on the physical mechanism.
   public static final class FeedBackController {
-    public static final double kP = 0.0;
+    public static final double kP = 10.0;
     public static final double kI = 0.0;
     public static final double kD = 0.0;
 
     public static final class SIM {
-      public static final double kP = 0.0;
+      public static final double kP = 0.05;
       public static final double kI = 0.0;
       public static final double kD = 0.0;
     }
@@ -63,7 +64,15 @@ public final class LiftConstants {
   }
 
   // TODO: Replace with measured or calculated mechanism inertia.
-  public static final double MOTOR_INERTIA = 1.0;
+  public static final double MOTOR_INERTIA = 0.4;
+
+  public static final double LEVEL1_HARDLIMIT = 0.40;
+  public static final double LEVEL2_HARDLIMIT = 0.59;
+  public static final double LEVEL3_HARDLIMIT = 0.59;
+
+  public static final double LEVEL1_HARDLIMIT_TOP = 0.59;
+  public static final double LEVEL2_HARDLIMIT_TOP = 1.18;
+  public static final double LEVEL3_HARDLIMIT_TOP = 1.58;
 
   // TODO: Set a tolerance appropriate for the elevator's scoring and safety requirements.
   public static final double POSITION_TOLERANCE_RAD = Math.toRadians(2.0);

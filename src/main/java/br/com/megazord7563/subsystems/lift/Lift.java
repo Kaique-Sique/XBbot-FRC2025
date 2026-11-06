@@ -8,6 +8,7 @@ package br.com.megazord7563.subsystems.lift;
 
 import br.com.megazord7563.Constants;
 import br.com.megazord7563.Constants.Mode;
+import br.com.megazord7563.XBbotMechanism3d;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -24,6 +25,7 @@ public class Lift extends SubsystemBase {
   private final Alert followerDisconnectedAlert;
   private double goalPositionRad;
   private boolean hasActiveGoal;
+  private XBbotMechanism3d mechanism3d;
 
   /** Creates a new Lift subsystem. */
   public Lift(LiftIO io) {
@@ -33,6 +35,8 @@ public class Lift extends SubsystemBase {
         new Alert("Lift leader motor is disconnected or not configured.", AlertType.kError);
     followerDisconnectedAlert =
         new Alert("Lift follower motor is disconnected or not configured.", AlertType.kError);
+
+    mechanism3d = XBbotMechanism3d.getInstance();
   }
 
   @Override
@@ -47,6 +51,16 @@ public class Lift extends SubsystemBase {
     leaderDisconnectedAlert.set(!inputs.leaderMotorConnected && Constants.currentMode != Mode.SIM);
     followerDisconnectedAlert.set(
         !inputs.followerMotorConnected && Constants.currentMode != Mode.SIM);
+
+    mechanism3d.setL1Height(getPositionMetters());
+    mechanism3d.setL2Height(
+        getPositionMetters() > LiftConstants.LEVEL1_HARDLIMIT
+            ? getPositionMetters() - LiftConstants.LEVEL1_HARDLIMIT
+            : 0.0);
+    mechanism3d.setL3Height(
+        getPositionMetters() > LiftConstants.LEVEL2_HARDLIMIT + LiftConstants.LEVEL1_HARDLIMIT
+            ? getPositionMetters() - LiftConstants.LEVEL2_HARDLIMIT - LiftConstants.LEVEL1_HARDLIMIT
+            : 0.0);
   }
 
   // ── Setters ─────────────────────────────────────────────────────────────────
@@ -90,6 +104,11 @@ public class Lift extends SubsystemBase {
         && Math.abs(goalPositionRad - getPositionRad()) <= LiftConstants.POSITION_TOLERANCE_RAD;
   }
 
+  @AutoLogOutput(key = "Lift/Metters")
+  public double getPositionMetters() {
+    return inputs.leaderPositionRad * LiftConstants.PULLEY_RADIUS_METERS;
+  }
+
   @AutoLogOutput(key = "Lift/LeaderPositionRad")
   public double getPositionRad() {
     return inputs.leaderPositionRad;
@@ -121,8 +140,13 @@ public class Lift extends SubsystemBase {
   // ── Commands ────────────────────────────────────────────────────────────────
 
   /** Holds the lift at the requested position until interrupted. */
-  public Command setPositionCommand(double positionRad) {
+  public Command setPositionRadCommand(double positionRad) {
     return run(() -> setPosition(positionRad));
+  }
+
+  /** Holds the lift at the requested position until interrupted. */
+  public Command setPositionMettersCommand(double positionMetters) {
+    return run(() -> setPosition(positionMetters / LiftConstants.PULLEY_RADIUS_METERS));
   }
 
   /** Runs the lift at the requested voltage and stops when interrupted. */

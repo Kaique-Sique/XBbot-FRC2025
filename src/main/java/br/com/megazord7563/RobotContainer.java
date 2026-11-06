@@ -129,17 +129,21 @@ public class RobotContainer {
             () -> -controller.getRightX()));
 
     // Lock to 0° when A button is held
-    controller
-        .a()
-        .whileTrue(
-            DriveCommands.joystickDriveAtAngle(
-                driveSubsystem,
-                () -> -controller.getLeftY(),
-                () -> -controller.getLeftX(),
-                () -> Rotation2d.kZero));
+    /**
+     * controller .a() .whileTrue( DriveCommands.joystickDriveAtAngle( driveSubsystem, () ->
+     * -controller.getLeftY(), () -> -controller.getLeftX(), () -> Rotation2d.kZero));
+     */
 
     // Switch to X pattern when X button is pressed
-    controller.x().onTrue(Commands.runOnce(driveSubsystem::stopWithX, driveSubsystem));
+    // controller.x().onTrue(Commands.runOnce(driveSubsystem::stopWithX, driveSubsystem));
+
+    controller.y().whileTrue(lift.setPositionMettersCommand(1.58));
+
+    controller.b().whileTrue(lift.setPositionMettersCommand(0.98));
+
+    controller.x().whileTrue(lift.setPositionMettersCommand(0.40));
+
+    controller.a().whileTrue(lift.setPositionMettersCommand(0.0));
 
     // Reset gyro to 0° when B button is pressed
     controller
