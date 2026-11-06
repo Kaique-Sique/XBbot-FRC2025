@@ -7,17 +7,23 @@
 package br.com.megazord7563.subsystems.lift;
 
 import static br.com.megazord7563.util.PhoenixUtil.*;
+import static edu.wpi.first.units.Units.*;
 
 import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.StatusSignal;
+import com.ctre.phoenix6.configs.MotionMagicConfigs;
+import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.CoastOut;
 import com.ctre.phoenix6.controls.Follower;
+import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.ParentDevice;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.GravityTypeValue;
+import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.MotorAlignmentValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.math.filter.Debouncer;
@@ -36,6 +42,7 @@ public class LiftIOTalonFX implements LiftIO {
   private final VoltageOut voltageRequest = new VoltageOut(0.0);
   private final NeutralOut brakeRequest = new NeutralOut();
   private final CoastOut coastRequest = new CoastOut();
+  private final MotionMagicVoltage motionRequest = new MotionMagicVoltage(0.0);
 
   private final StatusSignal<Angle> leaderPosition;
   private final StatusSignal<AngularVelocity> leaderVelocity;
@@ -55,32 +62,13 @@ public class LiftIOTalonFX implements LiftIO {
   private final boolean hardwareConfigured;
 
   public LiftIOTalonFX() {
-    boolean validIds =
-        LiftConstants.LEADER_MOTOR_ID >= 0
-            && LiftConstants.FOLLOWER_MOTOR_ID >= 0
-            && LiftConstants.LEADER_MOTOR_ID != LiftConstants.FOLLOWER_MOTOR_ID;
-
-    if (!validIds) {
-      // Keep the robot bootable while the hardware IDs are still being confirmed.
-      leaderMotor = null;
-      followerMotor = null;
-      leaderPosition = null;
-      leaderVelocity = null;
-      leaderAppliedVolts = null;
-      leaderCurrent = null;
-      followerPosition = null;
-      followerVelocity = null;
-      followerAppliedVolts = null;
-      followerCurrent = null;
-      hardwareConfigured = false;
-      return;
-    }
-
     leaderMotor = new TalonFX(LiftConstants.LEADER_MOTOR_ID, LiftConstants.CAN_BUS);
     followerMotor = new TalonFX(LiftConstants.FOLLOWER_MOTOR_ID, LiftConstants.CAN_BUS);
 
+    followerMotor.getConfigurator().apply(new TalonFXConfiguration());
+    leaderMotor.getConfigurator().apply(new TalonFXConfiguration());
+
     var leaderConfig = new TalonFXConfiguration();
-    leaderConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
     leaderConfig.Voltage.PeakForwardVoltage = LiftConstants.MAX_VOLTAGE;
     leaderConfig.Voltage.PeakReverseVoltage = -LiftConstants.MAX_VOLTAGE;
     leaderConfig.Feedback.SensorToMechanismRatio = LiftConstants.MOTOR_GEAR_RATIO;
@@ -91,12 +79,32 @@ public class LiftIOTalonFX implements LiftIO {
     leaderConfig.Slot0.kV = LiftConstants.FeedForwardController.kV;
     leaderConfig.Slot0.kA = LiftConstants.FeedForwardController.kA;
     leaderConfig.Slot0.kG = LiftConstants.FeedForwardController.kG;
+    leaderConfig.Slot0.GravityType = GravityTypeValue.Elevator_Static;
+    leaderConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold = LiftConstants.SOFTLIMIT_TOP;
+    leaderConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
+    leaderConfig.SoftwareLimitSwitch.ReverseSoftLimitThreshold = LiftConstants.SOFTLIMIT_BACK;
+    leaderConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
+    leaderConfig.withMotorOutput(
+        new MotorOutputConfigs()
+            .withInverted(InvertedValue.CounterClockwise_Positive)
+            .withNeutralMode(NeutralModeValue.Coast));
+
+    MotionMagicConfigs mm = new MotionMagicConfigs();
+    mm.withMotionMagicCruiseVelocity(RotationsPerSecond.of(100))
+        .withMotionMagicAcceleration(RotationsPerSecondPerSecond.of(600))
+        .withMotionMagicJerk(RotationsPerSecondPerSecond.per(Second).of(4000));
+
     tryUntilOk(5, () -> leaderMotor.getConfigurator().apply(leaderConfig, 0.25));
 
     var followerConfig = new TalonFXConfiguration();
     followerConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
     followerConfig.Voltage.PeakForwardVoltage = LiftConstants.MAX_VOLTAGE;
     followerConfig.Voltage.PeakReverseVoltage = -LiftConstants.MAX_VOLTAGE;
+    followerConfig.withMotorOutput(
+        new MotorOutputConfigs()
+            .withInverted(InvertedValue.CounterClockwise_Positive)
+            .withNeutralMode(NeutralModeValue.Brake));
+
     tryUntilOk(5, () -> followerMotor.getConfigurator().apply(followerConfig, 0.25));
 
     leaderPosition = leaderMotor.getPosition();
@@ -123,17 +131,14 @@ public class LiftIOTalonFX implements LiftIO {
 
     hardwareConfigured = true;
     enforceFollowerMode();
+    leaderMotor.setPosition(0.0);
   }
 
   /** Reasserts the follower relationship; the follower has no independent control path. */
   private void enforceFollowerMode() {
     if (hardwareConfigured) {
       followerMotor.setControl(
-          new Follower(
-              LiftConstants.LEADER_MOTOR_ID,
-              LiftConstants.FOLLOWER_OPPOSES_LEADER
-                  ? MotorAlignmentValue.Opposed
-                  : MotorAlignmentValue.Aligned));
+          new Follower(leaderMotor.getDeviceID(), MotorAlignmentValue.Opposed));
     }
   }
 
@@ -169,9 +174,13 @@ public class LiftIOTalonFX implements LiftIO {
   }
 
   @Override
-  public void setPosition(double positionRad) {
+  public void setPosition(double positionRad, boolean useMotionMagic) {
     if (hardwareConfigured) {
-      leaderMotor.setControl(positionRequest.withPosition(Units.radiansToRotations(positionRad)));
+      if (useMotionMagic) {
+        leaderMotor.setControl(positionRequest.withPosition(Units.radiansToRotations(positionRad)));
+      } else {
+        leaderMotor.setControl(positionRequest.withPosition(Units.radiansToRotations(positionRad)));
+      }
       enforceFollowerMode();
     }
   }

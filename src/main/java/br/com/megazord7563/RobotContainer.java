@@ -121,12 +121,12 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     // Default command, normal field-relative drive
-    driveSubsystem.setDefaultCommand(
-        DriveCommands.joystickDrive(
-            driveSubsystem,
-            () -> -controller.getLeftY(),
-            () -> -controller.getLeftX(),
-            () -> -controller.getRightX()));
+    // driveSubsystem.setDefaultCommand(
+    //    DriveCommands.joystickDrive(
+    //        driveSubsystem,
+    //        () -> -controller.getLeftY(),
+    //        () -> -controller.getLeftX(),
+    //        () -> -controller.getRightX()));
 
     // Lock to 0° when A button is held
     /**
@@ -137,13 +137,39 @@ public class RobotContainer {
     // Switch to X pattern when X button is pressed
     // controller.x().onTrue(Commands.runOnce(driveSubsystem::stopWithX, driveSubsystem));
 
-    controller.y().whileTrue(lift.setPositionMettersCommand(1.58));
+    controller
+        .y()
+        .and(controller.leftBumper())
+        .whileTrue(lift.setPositionMettersCommand(1.50, true));
+    controller
+        .b()
+        .and(controller.leftBumper())
+        .whileTrue(lift.setPositionMettersCommand(0.98, true));
+    controller
+        .x()
+        .and(controller.leftBumper())
+        .whileTrue(lift.setPositionMettersCommand(0.40, true));
+    controller
+        .a()
+        .and(controller.leftBumper())
+        .whileTrue(lift.setPositionMettersCommand(0.0, true));
 
-    controller.b().whileTrue(lift.setPositionMettersCommand(0.98));
-
-    controller.x().whileTrue(lift.setPositionMettersCommand(0.40));
-
-    controller.a().whileTrue(lift.setPositionMettersCommand(0.0));
+    controller
+        .y()
+        .and(controller.rightBumper())
+        .whileTrue(lift.setPositionMettersCommand(1.50, true));
+    controller
+        .b()
+        .and(controller.rightBumper())
+        .whileTrue(lift.setPositionMettersCommand(0.98, true));
+    controller
+        .x()
+        .and(controller.rightBumper())
+        .whileTrue(lift.setPositionMettersCommand(0.40, true));
+    controller
+        .a()
+        .and(controller.rightBumper())
+        .whileTrue(lift.setPositionMettersCommand(0.0, true));
 
     // Reset gyro to 0° when B button is pressed
     controller

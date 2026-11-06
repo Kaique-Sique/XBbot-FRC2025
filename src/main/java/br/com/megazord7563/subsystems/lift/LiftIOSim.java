@@ -62,7 +62,7 @@ public class LiftIOSim implements LiftIO {
   }
 
   @Override
-  public void setPosition(double positionRad) {
+  public void setPosition(double positionRad, boolean useMotionMagic) {
     closedLoop = true;
     goalPositionRad = positionRad;
   }

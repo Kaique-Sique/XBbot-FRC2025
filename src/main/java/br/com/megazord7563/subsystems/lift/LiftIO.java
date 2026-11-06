@@ -29,7 +29,7 @@ public interface LiftIO {
   public default void updateInputs(LiftIOInputs inputs) {}
 
   /** Moves the lift to the requested mechanism position in radians using the leader. */
-  public default void setPosition(double positionRad) {}
+  public default void setPosition(double positionRad, boolean useMotionMagic) {}
 
   /** Runs the leader motor with the requested open-loop voltage. */
   public default void setVoltage(double volts) {}

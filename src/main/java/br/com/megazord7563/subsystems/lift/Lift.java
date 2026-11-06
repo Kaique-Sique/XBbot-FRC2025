@@ -66,10 +66,10 @@ public class Lift extends SubsystemBase {
   // ── Setters ─────────────────────────────────────────────────────────────────
 
   /** Moves the lift to the requested mechanism position in radians using the leader motor. */
-  public void setPosition(double positionRad) {
+  public void setPosition(double positionRad, boolean useMotionMagic) {
     goalPositionRad = positionRad;
     hasActiveGoal = true;
-    io.setPosition(positionRad);
+    io.setPosition(positionRad, useMotionMagic);
   }
 
   /** Runs the leader motor with the requested open-loop voltage. */
@@ -140,13 +140,14 @@ public class Lift extends SubsystemBase {
   // ── Commands ────────────────────────────────────────────────────────────────
 
   /** Holds the lift at the requested position until interrupted. */
-  public Command setPositionRadCommand(double positionRad) {
-    return run(() -> setPosition(positionRad));
+  public Command setPositionRadCommand(double positionRad, boolean useMotionMagic) {
+    return run(() -> setPosition(positionRad, useMotionMagic));
   }
 
   /** Holds the lift at the requested position until interrupted. */
-  public Command setPositionMettersCommand(double positionMetters) {
-    return run(() -> setPosition(positionMetters / LiftConstants.PULLEY_RADIUS_METERS));
+  public Command setPositionMettersCommand(double positionMetters, boolean useMotionMagic) {
+    return run(
+        () -> setPosition(positionMetters / LiftConstants.PULLEY_RADIUS_METERS, useMotionMagic));
   }
 
   /** Runs the lift at the requested voltage and stops when interrupted. */

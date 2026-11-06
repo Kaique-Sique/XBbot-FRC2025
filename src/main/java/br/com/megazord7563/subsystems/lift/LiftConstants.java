@@ -15,56 +15,50 @@ public final class LiftConstants {
   // The CAN bus follows the existing mechanism convention. Confirm wiring before enabling Lift.
   public static final CANBus CAN_BUS = TunerConstants.kCANBus;
 
-  // TODO: Replace the sentinel IDs with the confirmed CAN IDs before using the real mechanism.
-  public static final int LEADER_MOTOR_ID = -1;
-  public static final int FOLLOWER_MOTOR_ID = -1;
+  public static final int LEADER_MOTOR_ID = 21;
+  public static final int FOLLOWER_MOTOR_ID = 22;
 
   // The follower is mechanically mirrored relative to the leader.
   public static final boolean FOLLOWER_OPPOSES_LEADER = true;
 
-  // TODO: Define the actual motor-to-elevator reduction and elevator geometry.
   // This placeholder only allows the simulation model to be constructed; it is not a validated
   // ratio.
   public static final double MOTOR_GEAR_RATIO = 4.5; // considering the gear ratio
 
-  public static final double PULLEY_RADIUS_METERS = 0.05; // considering the pulley radius
+  public static final double PULLEY_RADIUS_METERS = 0.05732 / 2; // considering the pulley radius
 
   // Both Kraken X60 motors contribute torque to the same elevator mechanism.
   public static final DCMotor DC_MOTOR = DCMotor.getKrakenX60Foc(2);
 
-  // TODO: Confirm safe voltage, current limits, mechanical travel, and the elevator's load.
   public static final double MAX_VOLTAGE = 12.0;
 
-  // TODO: Characterize the Lift controller gains on the physical mechanism.
   public static final class FeedBackController {
-    public static final double kP = 10.0;
+    public static final double kP = 3;
     public static final double kI = 0.0;
     public static final double kD = 0.0;
 
     public static final class SIM {
-      public static final double kP = 0.05;
+      public static final double kP = 0.09;
       public static final double kI = 0.0;
       public static final double kD = 0.0;
     }
   }
 
-  // TODO: Characterize motion feedforward after the elevator geometry and mass are known.
   public static final class FeedForwardController {
-    public static final double kS = 0.0;
-    public static final double kV = 0.0;
+    public static final double kS = 20.0;
+    public static final double kV = 0.5;
     public static final double kA = 0.0;
     public static final double kG = 0.0;
 
     public static final class SIM {
-      public static final double kS = 0.0;
-      public static final double kV = 0.0;
-      public static final double kA = 0.0;
+      public static final double kS = 0.25;
+      public static final double kV = 0.002;
+      public static final double kA = 0.01;
       public static final double kG = 0.0;
     }
   }
 
-  // TODO: Replace with measured or calculated mechanism inertia.
-  public static final double MOTOR_INERTIA = 0.4;
+  public static final double MOTOR_INERTIA = 0.6;
 
   public static final double LEVEL1_HARDLIMIT = 0.40;
   public static final double LEVEL2_HARDLIMIT = 0.59;
@@ -74,8 +68,10 @@ public final class LiftConstants {
   public static final double LEVEL2_HARDLIMIT_TOP = 1.18;
   public static final double LEVEL3_HARDLIMIT_TOP = 1.58;
 
-  // TODO: Set a tolerance appropriate for the elevator's scoring and safety requirements.
   public static final double POSITION_TOLERANCE_RAD = Math.toRadians(2.0);
+
+  public static final double SOFTLIMIT_TOP = 800.0;
+  public static final double SOFTLIMIT_BACK = 0.0;
 
   private LiftConstants() {}
 }
