@@ -14,54 +14,81 @@ import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Mass;
 
-public class OuttakeConstants {
+/** Hardware, control, and physics constants for the coral Outtake. */
+public final class OuttakeConstants {
+  private OuttakeConstants() {}
+
   public static final String OUTTAKE_MECHANISM_NAME = "Outtake";
   public static final Mass OUTTAKE_MASS = Kilograms.of(3);
-
-  // The legacy robot used the roboRIO CAN bus. Confirm that these devices are now wired to the
-  // CANivore before enabling the mechanism.
   public static final CANBus CAN_BUS = TunerConstants.kCANBus;
 
+  /** Provisional mechanical values; validate against the assembled mechanism before enabling. */
+  public static final class PivotGeometry {
+    private PivotGeometry() {}
+
+    public static final double ARM_LENGTH_METERS = 0.30;
+    public static final double PAYLOAD_MASS_KG = 5.0;
+    public static final double PAYLOAD_CENTER_OF_MASS_RADIUS_METERS = 0.25;
+    public static final double ARM_MASS_KG = 1.0;
+    public static final double ARM_CENTER_OF_MASS_RADIUS_METERS = ARM_LENGTH_METERS / 2.0;
+
+    // Point-mass payload plus a uniform arm approximation.
+    public static final double MOMENT_OF_INERTIA_KG_METERS_SQUARED =
+        PAYLOAD_MASS_KG * Math.pow(PAYLOAD_CENTER_OF_MASS_RADIUS_METERS, 2)
+            + ARM_MASS_KG * Math.pow(ARM_LENGTH_METERS, 2) / 3.0;
+
+    // Angles are measured from horizontal. These are simulation stops until the real zero
+    // reference and hard-stop geometry are confirmed.
+    public static final double MIN_ANGLE_RAD = Math.toRadians(-20.0);
+    public static final double MAX_ANGLE_RAD = Math.toRadians(110.0);
+    public static final double STARTING_ANGLE_RAD = 0.0;
+  }
+
   public static final class OuttakeMotor {
-    // Legacy OfficialCode-2025 Coral motor ID.
-    public static final int MOTOR_ID = 20;
-    // Legacy coral roller used a 1:1 motor-to-mechanism reduction.
+    private OuttakeMotor() {}
+
+    // Provisional CAN ID, selected with permission to assign IDs for this implementation.
+    public static final int MOTOR_ID = 24;
     public static final double MOTOR_GEAR_RATIO = 1.0;
-    // The legacy TalonFX was configured as Clockwise_Positive.
     public static final boolean MOTOR_INVERTED = true;
+
+    // WPILib does not expose a dedicated Kraken X44 model. This X60 FOC model is a documented
+    // approximation for simulation only; the physical controller remains configured for the X44.
     public static final DCMotor DC_MOTOR = DCMotor.getKrakenX60Foc(1);
 
-    public static final Current STATOR_CURRENT_LIMIT =
-        Amps.of(80); // TODO: Validate on the Kraken X60.
-    public static final Current SUPPLY_CURRENT_LIMIT =
-        Amps.of(30); // TODO: Validate for the power budget.
+    public static final Current STATOR_CURRENT_LIMIT = Amps.of(60);
+    public static final Current SUPPLY_CURRENT_LIMIT = Amps.of(30);
+    public static final double MOTOR_INERTIA = 0.001;
+    public static final double MAX_VOLTAGE = 8.0;
 
-    public static final double MOTOR_INERTIA =
-        0.2; // TODO: Measure or calculate the mechanism-side moment of inertia.
-    public static final double MAX_VOLTAGE =
-        8.0; // TODO: Reconcile with the legacy +/-2.65 V limit and validate on hardware.
+    public static final class FeedBackController {
+      private FeedBackController() {}
 
-    // The legacy Coral TalonFX used a position-oriented control path. The current Outtake uses
-    // VelocityVoltage, so its old position-loop gains must not be copied into this velocity loop.
-    public static class FeedBackController {
-      public static final double kP = 0.0; // TODO: Characterize and tune the velocity loop.
+      // Characterize and tune on the real X44 before competition use.
+      public static final double kP = 0.0;
       public static final double kI = 0.0;
       public static final double kD = 0.0;
 
-      public static class SIM {
-        public static final double kP = 0.0; // TODO: Tune the simulation model.
+      public static final class SIM {
+        private SIM() {}
+
+        public static final double kP = 0.15;
         public static final double kI = 0.0;
         public static final double kD = 0.0;
       }
     }
 
-    public static class FeedForwardController {
-      public static final double kV = 0.0; // TODO: Characterize on the current motor and gearing.
+    public static final class FeedForwardController {
+      private FeedForwardController() {}
+
+      public static final double kV = 0.0;
       public static final double kS = 0.0;
       public static final double kA = 0.0;
 
-      public static class SIM {
-        public static final double kV = 0.0;
+      public static final class SIM {
+        private SIM() {}
+
+        public static final double kV = 0.02;
         public static final double kS = 0.0;
         public static final double kA = 0.0;
       }
@@ -69,49 +96,55 @@ public class OuttakeConstants {
   }
 
   public static final class PivotMotor {
-    // Legacy OfficialCode-2025 ArticuladorCoral motor ID.
-    public static final int MOTOR_ID = 21;
-    // Inverse of the legacy motor-to-output reduction:
-    // (1/3) * (20/68) * (20/42).
-    public static final double MOTOR_GEAR_RATIO =
-        1.0 / ((1.0 / 3.0) * (20.0 / 68.0) * (20.0 / 42.0));
+    private PivotMotor() {}
+
+    // Provisional CAN ID. The requested 3:1 reduction is motor rotations per arm rotation.
+    public static final int MOTOR_ID = 23;
+    public static final double MOTOR_GEAR_RATIO = 3.0;
     public static final boolean MOTOR_INVERTED = false;
     public static final DCMotor DC_MOTOR = DCMotor.getKrakenX60Foc(1);
 
-    public static final Current STATOR_CURRENT_LIMIT =
-        Amps.of(80); // TODO: Validate on the Kraken X60.
-    public static final Current SUPPLY_CURRENT_LIMIT =
-        Amps.of(30); // TODO: Validate for the power budget.
-
+    public static final Current STATOR_CURRENT_LIMIT = Amps.of(80);
+    public static final Current SUPPLY_CURRENT_LIMIT = Amps.of(40);
     public static final double MOTOR_INERTIA =
-        0.4; // TODO: Measure or calculate the pivot-side moment of inertia.
-    public static final double MAX_VOLTAGE = 8.0; // TODO: Confirm a safe voltage limit.
-    public static final double POSITION_TOLERANCE_RAD =
-        0.2; // TODO: Tune against the pivot geometry.
+        PivotGeometry.MOMENT_OF_INERTIA_KG_METERS_SQUARED;
+    public static final double MAX_VOLTAGE = 8.0;
+    public static final double POSITION_TOLERANCE_RAD = 0.05;
 
-    // Legacy gains were tuned for a NEO/Spark MAX MAXMotion controller and are not portable
-    // to this Kraken X60/Phoenix 6 position loop.
-    public static class FeedBackController {
-      public static final double kP = 0.0; // TODO: Tune on hardware.
+    public static final class FeedBackController {
+      private FeedBackController() {}
+
+      // Deliberately left untuned. Do not enable closed-loop movement on the real robot until
+      // the pivot encoder zero, direction, and gains have been verified.
+      public static final double kP = 0.0;
       public static final double kI = 0.0;
       public static final double kD = 0.0;
 
-      public static class SIM {
-        public static final double kP = 0.0; // TODO: Tune the simulation model.
+      public static final class SIM {
+        private SIM() {}
+
+        public static final double kP = 18.0;
         public static final double kI = 0.0;
-        public static final double kD = 0.0;
+        public static final double kD = 1.2;
       }
     }
 
-    // TODO: Add characterized gravity feedforward after validating the pivot zero angle.
-    public static class FeedForwardController {
+    public static final class FeedForwardController {
+      private FeedForwardController() {}
+
       public static final double kV = 0.0;
       public static final double kS = 0.0;
       public static final double kA = 0.0;
+      public static final double kG = 0.0;
 
-      public static class SIM {
-        public static final double kV = 0.0;
+      public static final class SIM {
+        private SIM() {}
+
+        // Approximate voltage required to hold the assumed 5 kg payload near horizontal.
+        // Recalculate after measuring the actual arm and payload center of mass.
+        public static final double kG = 6.8;
         public static final double kS = 0.0;
+        public static final double kV = 0.0;
         public static final double kA = 0.0;
       }
     }
