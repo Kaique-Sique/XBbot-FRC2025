@@ -48,7 +48,7 @@ public final class OuttakeConstants {
     private OuttakeMotor() {}
 
     // Provisional CAN ID, selected with permission to assign IDs for this implementation.
-    public static final int MOTOR_ID = 24;
+    public static final int MOTOR_ID = 26;
     public static final double MOTOR_GEAR_RATIO = 1.0;
     public static final boolean MOTOR_INVERTED = true;
 
@@ -99,7 +99,7 @@ public final class OuttakeConstants {
     private PivotMotor() {}
 
     // Provisional CAN ID. The requested 3:1 reduction is motor rotations per arm rotation.
-    public static final int MOTOR_ID = 23;
+    public static final int MOTOR_ID = 25;
     public static final double MOTOR_GEAR_RATIO = 3.0;
     public static final boolean MOTOR_INVERTED = false;
     public static final DCMotor DC_MOTOR = DCMotor.getKrakenX60Foc(1);
@@ -108,7 +108,7 @@ public final class OuttakeConstants {
     public static final Current SUPPLY_CURRENT_LIMIT = Amps.of(40);
     public static final double MOTOR_INERTIA =
         PivotGeometry.MOMENT_OF_INERTIA_KG_METERS_SQUARED;
-    public static final double MAX_VOLTAGE = 8.0;
+    public static final double MAX_VOLTAGE = 12.0;
     public static final double POSITION_TOLERANCE_RAD = 0.05;
 
     public static final class FeedBackController {
