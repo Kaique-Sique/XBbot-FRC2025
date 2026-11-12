@@ -195,7 +195,9 @@ public class OuttakeIOSim implements OuttakeIO {
 
   @Override
   public void setPivotBrake() {
-    setPivotCoast();
+    // Hold the current arm angle against gravity instead of allowing the 5 kg payload to fall.
+    pivotClosedLoop = true;
+    pivotGoalRad = pivotSim.getAngleRads();
   }
 
   @Override
