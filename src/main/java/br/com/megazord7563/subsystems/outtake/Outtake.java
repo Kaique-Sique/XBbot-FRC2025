@@ -118,7 +118,8 @@ public class Outtake extends SubsystemBase {
 
   /** Disables all outputs to motors. */
   public void stop() {
-    setCoast();
+    // Keep the gravity-loaded pivot from freely dropping when the mechanism is stopped.
+    setBrake();
   }
 
   /** Disables all outputs to motors. */
