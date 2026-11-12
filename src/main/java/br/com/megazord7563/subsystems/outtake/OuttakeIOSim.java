@@ -8,26 +8,23 @@ package br.com.megazord7563.subsystems.outtake;
 
 import br.com.megazord7563.Constants;
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.system.plant.LinearSystemId;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.simulation.DCMotorSim;
+import edu.wpi.first.wpilibj.simulation.SingleJointedArmSim;
 
 /**
- * Physics sim implementation of Outtake IO. The sim models are configured using the motor and
- * controller constants from OuttakeConstants. Simulation is voltage controlled.
+ * Physics simulation for the Outtake.
+ *
+ * <p>The pivot is modeled as a gravity-loaded single-jointed arm with mechanical travel limits.
+ * The roller is modeled independently as a motor-driven rotating inertia. The Kraken X44 roller
+ * uses the closest available WPILib motor model (Kraken X60 FOC) as an approximation.
  */
 public class OuttakeIOSim implements OuttakeIO {
+  private final SingleJointedArmSim pivotSim;
   private final DCMotorSim outtakeSim;
-  private final DCMotorSim pivotSim;
-
-  private boolean outtakeClosedLoop = false;
-  private boolean pivotClosedLoop = false;
-
-  private final PIDController outtakeController =
-      new PIDController(
-          OuttakeConstants.OuttakeMotor.FeedBackController.SIM.kP,
-          OuttakeConstants.OuttakeMotor.FeedBackController.SIM.kI,
-          OuttakeConstants.OuttakeMotor.FeedBackController.SIM.kD);
 
   private final PIDController pivotController =
       new PIDController(
@@ -35,13 +32,39 @@ public class OuttakeIOSim implements OuttakeIO {
           OuttakeConstants.PivotMotor.FeedBackController.SIM.kI,
           OuttakeConstants.PivotMotor.FeedBackController.SIM.kD);
 
-  private double outtakeFFVolts = 0.0;
-  private double pivotFFVolts = 0.0;
-  private double outtakeAppliedVolts = 0.0;
-  private double pivotAppliedVolts = 0.0;
+  private final PIDController outtakeController =
+      new PIDController(
+          OuttakeConstants.OuttakeMotor.FeedBackController.SIM.kP,
+          OuttakeConstants.OuttakeMotor.FeedBackController.SIM.kI,
+          OuttakeConstants.OuttakeMotor.FeedBackController.SIM.kD);
+
+  private final ArmFeedforward pivotFeedforward =
+      new ArmFeedforward(
+          OuttakeConstants.PivotMotor.FeedForwardController.SIM.kS,
+          OuttakeConstants.PivotMotor.FeedForwardController.SIM.kG,
+          OuttakeConstants.PivotMotor.FeedForwardController.SIM.kV,
+          OuttakeConstants.PivotMotor.FeedForwardController.SIM.kA);
+
+  private boolean pivotClosedLoop;
+  private boolean outtakeClosedLoop;
+  private double pivotGoalRad;
+  private double outtakeGoalVelocityRadPerSec;
+  private double pivotAppliedVolts;
+  private double outtakeAppliedVolts;
+  private double outtakeFeedforwardVolts;
 
   public OuttakeIOSim() {
-    // Create outtake and pivot sim models
+    pivotSim =
+        new SingleJointedArmSim(
+            OuttakeConstants.PivotMotor.DC_MOTOR,
+            OuttakeConstants.PivotMotor.MOTOR_GEAR_RATIO,
+            OuttakeConstants.PivotGeometry.MOMENT_OF_INERTIA_KG_METERS_SQUARED,
+            OuttakeConstants.PivotGeometry.ARM_LENGTH_METERS,
+            Rotation2d.fromRadians(OuttakeConstants.PivotGeometry.MIN_ANGLE_RAD),
+            Rotation2d.fromRadians(OuttakeConstants.PivotGeometry.MAX_ANGLE_RAD),
+            true,
+            Rotation2d.fromRadians(OuttakeConstants.PivotGeometry.STARTING_ANGLE_RAD));
+
     outtakeSim =
         new DCMotorSim(
             LinearSystemId.createDCMotorSystem(
@@ -49,78 +72,72 @@ public class OuttakeIOSim implements OuttakeIO {
                 OuttakeConstants.OuttakeMotor.MOTOR_INERTIA,
                 OuttakeConstants.OuttakeMotor.MOTOR_GEAR_RATIO),
             OuttakeConstants.OuttakeMotor.DC_MOTOR);
-
-    pivotSim =
-        new DCMotorSim(
-            LinearSystemId.createDCMotorSystem(
-                OuttakeConstants.PivotMotor.DC_MOTOR,
-                OuttakeConstants.PivotMotor.MOTOR_INERTIA,
-                OuttakeConstants.PivotMotor.MOTOR_GEAR_RATIO),
-            OuttakeConstants.PivotMotor.DC_MOTOR);
   }
 
   @Override
   public void updateInputs(OuttakeIOInputs inputs) {
-    // Run closed-loop control
-    if (outtakeClosedLoop) {
-      outtakeAppliedVolts =
-          outtakeFFVolts + outtakeController.calculate(outtakeSim.getAngularVelocityRadPerSec());
-    } else {
-      outtakeController.reset();
-    }
     if (pivotClosedLoop) {
+      double angleRad = pivotSim.getAngleRads();
+      double velocityRadPerSec = pivotSim.getVelocityRadPerSec();
       pivotAppliedVolts =
-          pivotFFVolts + pivotController.calculate(pivotSim.getAngularPositionRad());
+          pivotController.calculate(angleRad, pivotGoalRad)
+              + pivotFeedforward.calculate(angleRad, velocityRadPerSec);
     } else {
       pivotController.reset();
     }
 
-    // Clamp the controller output before both applying and logging it.
-    outtakeAppliedVolts =
-        MathUtil.clamp(
-            outtakeAppliedVolts,
-            -OuttakeConstants.OuttakeMotor.MAX_VOLTAGE,
-            OuttakeConstants.OuttakeMotor.MAX_VOLTAGE);
+    if (outtakeClosedLoop) {
+      outtakeAppliedVolts =
+          outtakeFeedforwardVolts
+              + outtakeController.calculate(
+                  outtakeSim.getAngularVelocityRadPerSec(), outtakeGoalVelocityRadPerSec);
+    } else {
+      outtakeController.reset();
+    }
+
     pivotAppliedVolts =
         MathUtil.clamp(
             pivotAppliedVolts,
             -OuttakeConstants.PivotMotor.MAX_VOLTAGE,
             OuttakeConstants.PivotMotor.MAX_VOLTAGE);
+    outtakeAppliedVolts =
+        MathUtil.clamp(
+            outtakeAppliedVolts,
+            -OuttakeConstants.OuttakeMotor.MAX_VOLTAGE,
+            OuttakeConstants.OuttakeMotor.MAX_VOLTAGE);
 
-    // Update simulation state
-    outtakeSim.setInputVoltage(outtakeAppliedVolts);
     pivotSim.setInputVoltage(pivotAppliedVolts);
-    outtakeSim.update(Constants.periodicLoopPeriod);
+    outtakeSim.setInputVoltage(outtakeAppliedVolts);
     pivotSim.update(Constants.periodicLoopPeriod);
+    outtakeSim.update(Constants.periodicLoopPeriod);
 
-    // Update outtake inputs
+    inputs.pivotMotorConnected = true;
+    inputs.pivotMotorPositionRad = pivotSim.getAngleRads();
+    inputs.pivotMotorVelocityRadPerSec = pivotSim.getVelocityRadPerSec();
+    inputs.pivotMotorAppliedVolts = pivotAppliedVolts;
+    inputs.pivotMotorCurrentAmps = pivotSim.getCurrentDrawAmps();
+
     inputs.outtakeMotorConnected = true;
     inputs.outtakeMotorPositionRad = outtakeSim.getAngularPositionRad();
     inputs.outtakeMotorVelocityRadPerSec = outtakeSim.getAngularVelocityRadPerSec();
     inputs.outtakeMotorAppliedVolts = outtakeAppliedVolts;
     inputs.outtakeMotorCurrentAmps = outtakeSim.getCurrentDrawAmps();
-
-    // Update pivot inputs
-    inputs.pivotMotorConnected = true;
-    inputs.pivotMotorPositionRad = pivotSim.getAngularPositionRad();
-    inputs.pivotMotorVelocityRadPerSec = pivotSim.getAngularVelocityRadPerSec();
-    inputs.pivotMotorAppliedVolts = pivotAppliedVolts;
-    inputs.pivotMotorCurrentAmps = pivotSim.getCurrentDrawAmps();
   }
 
   @Override
-  public void setOuttakeOpenLoop(double output) {
-    outtakeClosedLoop = false;
-    outtakeAppliedVolts =
+  public void setPivotPosition(double positionRad) {
+    pivotClosedLoop = true;
+    pivotGoalRad =
         MathUtil.clamp(
-            output,
-            -OuttakeConstants.OuttakeMotor.MAX_VOLTAGE,
-            OuttakeConstants.OuttakeMotor.MAX_VOLTAGE);
+            positionRad,
+            OuttakeConstants.PivotGeometry.MIN_ANGLE_RAD,
+            OuttakeConstants.PivotGeometry.MAX_ANGLE_RAD);
   }
 
   @Override
   public void setPivotOpenLoop(double output) {
     pivotClosedLoop = false;
+    pivotController.reset();
     pivotAppliedVolts =
         MathUtil.clamp(
             output,
@@ -131,19 +148,22 @@ public class OuttakeIOSim implements OuttakeIO {
   @Override
   public void setOuttakeVelocity(double velocityRadPerSec) {
     outtakeClosedLoop = true;
-    outtakeFFVolts =
-        OuttakeConstants.OuttakeMotor.FeedForwardController.SIM.kS * Math.signum(velocityRadPerSec)
+    outtakeGoalVelocityRadPerSec = velocityRadPerSec;
+    outtakeFeedforwardVolts =
+        OuttakeConstants.OuttakeMotor.FeedForwardController.SIM.kS
+                * Math.signum(velocityRadPerSec)
             + OuttakeConstants.OuttakeMotor.FeedForwardController.SIM.kV * velocityRadPerSec;
-    outtakeController.setSetpoint(velocityRadPerSec);
   }
 
   @Override
-  public void setPivotPosition(double positionRad) {
-    pivotClosedLoop = true;
-    // TODO: Position is not a valid input to kS/kV feedforward. Keep this at zero until a
-    // characterized gravity feedforward (kG) and motion feedforward are implemented.
-    pivotFFVolts = 0.0;
-    pivotController.setSetpoint(positionRad);
+  public void setOuttakeOpenLoop(double output) {
+    outtakeClosedLoop = false;
+    outtakeController.reset();
+    outtakeAppliedVolts =
+        MathUtil.clamp(
+            output,
+            -OuttakeConstants.OuttakeMotor.MAX_VOLTAGE,
+            OuttakeConstants.OuttakeMotor.MAX_VOLTAGE);
   }
 
   @Override
@@ -155,32 +175,31 @@ public class OuttakeIOSim implements OuttakeIO {
   @Override
   public void setPivotCoast() {
     pivotClosedLoop = false;
+    pivotController.reset();
     pivotAppliedVolts = 0.0;
   }
 
   @Override
   public void setOuttakeCoast() {
     outtakeClosedLoop = false;
+    outtakeController.reset();
     outtakeAppliedVolts = 0.0;
   }
 
   @Override
   public void setBrake() {
+    // WPILib's simple plant model approximates brake mode as zero applied voltage.
     setPivotBrake();
     setOuttakeBrake();
   }
 
   @Override
   public void setPivotBrake() {
-    // In simulation, braking is the same as coasting.
-    pivotClosedLoop = false;
-    pivotAppliedVolts = 0.0;
+    setPivotCoast();
   }
 
   @Override
   public void setOuttakeBrake() {
-    // In simulation, braking is the same as coasting.
-    outtakeClosedLoop = false;
-    outtakeAppliedVolts = 0.0;
+    setOuttakeCoast();
   }
 }
